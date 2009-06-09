@@ -72,12 +72,12 @@ MachineModel* MachineItem::model() const
 
 QString MachineItem::text() const
 {
-	return mInfos.description();
+	return mInfos.data( MachineInfos::Description );
 }
 
 QPixmap MachineItem::icon() const
 {
-	const QString name = mInfos.name();
+	const QString name = mInfos.data( MachineInfos::Name );
 	QPixmap pixmap = QPixmap( mModel->iconsPath().append( QString( "/%1/%1.png" ).arg( name ) ) );
 	
 	if ( pixmap.isNull() && parent() )
@@ -90,7 +90,7 @@ QPixmap MachineItem::icon() const
 
 QBrush MachineItem::background() const
 {
-	const QString status = mInfos.mDriver.status();
+	const QString status = mInfos.mDriver.data( iDriver::Status );
 	const int lighter = 180;
 	QBrush brush;
 	

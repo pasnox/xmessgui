@@ -16,7 +16,7 @@ UISettings::UISettings( Settings* settings, const MachineItemList& machines, QWi
 	
 	foreach ( MachineItem* item, mMachines )
 	{
-		cbRomsPath->addItem( item->text(), item->infos().name() );
+		cbRomsPath->addItem( item->text(), item->infos().data( MachineInfos::Name ) );
 	}
 	
 	if ( mSettings->isInitialized() )

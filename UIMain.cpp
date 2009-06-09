@@ -51,7 +51,7 @@ UIMain::~UIMain()
 	
 	if ( machineItem )
 	{
-		mSettings->setCurrentMachine( machineItem->infos().name() );
+		mSettings->setCurrentMachine( machineItem->infos().data( MachineInfos::Name ) );
 	}
 	
 	delete mSettings;
@@ -100,13 +100,13 @@ void UIMain::on_tvMachines_activated( const QModelIndex& proxyIndex )
 	const MachineItem* root = mMachineModel->rootItem();
 	const MachineItem* machine = mMachineModel->itemFromIndex( machineIndex );
 	const MachineItem* parentMachine = machine->parent();
-	QString path = mSettings->romsPath( machine->infos().name() );
+	QString path = mSettings->romsPath( machine->infos().data( MachineInfos::Name ) );
 	
 	if ( path.isEmpty() )
 	{
 		if ( parentMachine != root )
 		{
-			path = mSettings->romsPath( parentMachine->infos().name() );
+			path = mSettings->romsPath( parentMachine->infos().data( MachineInfos::Name ) );
 		}
 		
 		if ( path.isNull() )
@@ -117,7 +117,7 @@ void UIMain::on_tvMachines_activated( const QModelIndex& proxyIndex )
 			{
 				const MachineItem* item = parentMachine == root ? machine : parentMachine;
 				
-				mSettings->setRomsPath( item->infos().name(), path );
+				mSettings->setRomsPath( item->infos().data( MachineInfos::Name ), path );
 			}
 		}
 	}
