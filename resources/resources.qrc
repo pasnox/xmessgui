@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/icons" >
+    <file alias="find-clear-16.png" >icons/find-clear-16.png</file>
+    <file alias="find-options-16.png" >icons/find-options-16.png</file>
+  </qresource>
+</RCC>
