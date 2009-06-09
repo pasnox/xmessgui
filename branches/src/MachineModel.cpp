@@ -7,7 +7,6 @@
 MachineModel::MachineModel( QObject* parent )
 	: QAbstractItemModel( parent )
 {
-	//connect( this, SIGNAL( ready() ), this, SLOT( debugTree() ) );
 }
 
 MachineModel::~MachineModel()
@@ -38,7 +37,7 @@ QVariant MachineModel::data( const QModelIndex& index, int role ) const
 			return item->text();
 			break;
 		case Qt::ToolTipRole:
-			return QString( "%1 - %2" ).arg( item->infos().manufacturer() ).arg( item->text() );
+			return QString( "%1 - %2" ).arg( item->infos().data( MachineInfos::Manufacturer ) ).arg( item->text() );
 			break;
 		case Qt::BackgroundRole:
 			return item->background();
@@ -233,7 +232,7 @@ void MachineModel::createItems()
 	for ( int i = 0; i < nodes.count(); i++ )
 	{
 		MachineItem* item = new MachineItem( this, nodes.at( i ).toElement() );
-		mMachineItems[ item->infos().name() ] = item;
+		mMachineItems[ item->infos().data( MachineInfos::Name ) ] = item;
 	}
 }
 
@@ -248,7 +247,7 @@ void MachineModel::arrangeItems()
 	
 	foreach ( MachineItem* item, mMachineItems )
 	{
-		const QString cloneOf = item->infos().cloneOf();
+		const QString cloneOf = item->infos().data( MachineInfos::CloneOf );
 		
 		if ( cloneOf.isEmpty() )
 		{
@@ -285,7 +284,7 @@ MachinesCount MachineModel::count( MachineItem* parent ) const
 	{
 		mcount.total++;
 		
-		if ( item->infos().cloneOf().isEmpty() )
+		if ( item->infos().data( MachineInfos::CloneOf ).isEmpty() )
 		{
 			mcount.unique++;
 		}
@@ -298,24 +297,4 @@ MachinesCount MachineModel::count( MachineItem* parent ) const
 	}
 	
 	return mcount;
-}
-
-void MachineModel::debugTree( MachineItem* parent ) const
-{
-	MachineItem* root = rootItem();
-	parent = parent ? parent : root;
-	
-	foreach ( MachineItem* item, parent->children() )
-	{
-		if ( item->parent() == root )
-		{
-			qWarning() << item->text() << "(" << item->infos().name() << ")" << "(" << item->infos().cloneOf() << ")";
-		}
-		else
-		{
-			qWarning() << "\t" << item->text() << "(" << item->infos().name() << ")" << "(" << item->infos().cloneOf() << ")";
-		}
-		
-		debugTree( item );
-	}
 }

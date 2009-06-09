@@ -55,9 +55,6 @@ public:
 	
 	MachinesCount count( MachineItem* parent = 0 ) const;
 	
-public slots:
-	void debugTree( MachineItem* parent = 0 ) const;
-	
 protected:
 	QString mIconsPath;
 	QDomDocument mDocument;

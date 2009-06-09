@@ -27,7 +27,7 @@ bool MachineFilterModel::filterAcceptsRow( int source_row, const QModelIndex& so
 	const QModelIndex machineIndex = mModel->index( source_row, 0, source_parent );
 	const MachineItem* machine = mModel->itemFromIndex( machineIndex );
 	
-	if ( !machine->text().contains( filterRegExp() ) && !machine->infos().manufacturer().contains( filterRegExp() ) )
+	if ( !machine->text().contains( filterRegExp() ) && !machine->infos().data( MachineInfos::Manufacturer ).contains( filterRegExp() ) )
 	{
 		foreach ( const MachineItem* item, machine->children() )
 		{

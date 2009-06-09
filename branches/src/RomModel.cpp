@@ -106,7 +106,7 @@ protected:
 		
 		forever
 		{
-			const QStringList paths = QStringList( mSettings->romsPath( mMachine->infos().name(), mMachine->infos().cloneOf() ) );
+			const QStringList paths = QStringList( mSettings->romsPath( mMachine->infos().data( MachineInfos::Name ), mMachine->infos().data( MachineInfos::CloneOf ) ) );
 			
 			QFileInfoList files;
 			QDir dir;

@@ -39,7 +39,7 @@ bool ProcessQuery::startNextTask()
 	switch ( mCurrentTask )
 	{
 		case ProcessQuery::StartRom:
-			args << mMachineRomPair.first->infos().name()
+			args << mMachineRomPair.first->infos().data( MachineInfos::Name )
 				<< "-skip_gameinfo"
 				<< "-skip_warnings"
 				<< "-cheat"
@@ -48,6 +48,7 @@ bool ProcessQuery::startNextTask()
 				<< "-keepaspect"
 				<< "-waitvsync"
 				<< "-unevenstretch"
+				//<< "-window"
 				<< "-video" << "opengl" // soft or opengl
 				//<< "-scalemode" << "yuy2x2" // none, async, yv12, yuy2, yv12x2, yuy2x2 (-video soft only)
 				<< "-rompath" << mSettings->biosPath()
