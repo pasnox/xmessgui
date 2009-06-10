@@ -9,6 +9,8 @@
 #include <QDir>
 #include <QIcon>
 
+#include <QDebug>
+
 class RomModelThread : public QThread
 {
 	Q_OBJECT
@@ -72,7 +74,7 @@ public:
 	}
 
 public slots:
-	void getRoms( const MachineItem* machine, const Settings* settings )
+	void getRoms( const MachineItem* machine, const Settings* settings, const QString& searchWildcard )
 	{
 		{
 			QMutexLocker locker( &mMutex );
@@ -80,6 +82,7 @@ public slots:
 			mRestart = isRunning();
 			mMachine = machine;
 			mSettings = settings;
+			mSearchWildcard = searchWildcard.trimmed();
 		}
 		
 		if ( !isRunning() )
@@ -94,15 +97,36 @@ protected:
 	bool mRestart;
 	const MachineItem* mMachine;
 	const Settings* mSettings;
+	QString mSearchWildcard;
 	
 	virtual void run()
 	{
+		QString mask;
+		
 		{
 			QMutexLocker locker( &mMutex );
 			mRestart = false;
+			mask = mSearchWildcard.isEmpty() ? "*" : mSearchWildcard.prepend( "*" ).append( "*" );
 		}
 		
-		const QStringList filters = QStringList( "*" );
+		QStringList filters;
+	
+		foreach ( const iDevice& device, mMachine->infos().devices() )
+		{
+			foreach ( const QString& extension, device.extensions() )
+			{
+				filters << QString( "%1.%2" ).arg( mask ).arg( extension );
+				
+				{
+					QMutexLocker locker( &mMutex );
+					
+					if ( mRestart )
+					{
+						return;
+					}
+				}
+			}
+		}
 		
 		forever
 		{
@@ -282,11 +306,11 @@ QString RomModel::filePath( const QModelIndex& index ) const
 	return QString::null;
 }
 
-void RomModel::refresh( const MachineItem* machine, const Settings* settings )
+void RomModel::refresh( const MachineItem* machine, const Settings* settings, const QString& searchWildcard )
 {
 	mFiles.clear();
 	reset();
-	mThread->getRoms( machine, settings );
+	mThread->getRoms( machine, settings, searchWildcard );
 }
 
 void RomModel::queryFinished( const QFileInfoList& files )

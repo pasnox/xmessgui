@@ -38,7 +38,6 @@ UIMain::UIMain( QWidget* parent )
 	
 	connect( mProcessQuery, SIGNAL( log( const QString& ) ), this, SLOT( appendLog( const QString& ) ) );
 	connect( seMachinesFilter, SIGNAL( textChanged( const QString& ) ), mMachineFilterModel, SLOT( setFilterWildcard( const QString& ) ) );
-	connect( seRomsFilter, SIGNAL( searchChanged( const QString& ) ), mRomFilterModel, SLOT( setFilterWildcard( const QString& ) ) );
 	connect( mMachineModel, SIGNAL( ready() ), this, SLOT( machineModel_ready() ) );
 	
 	reloadSettings();
@@ -125,7 +124,16 @@ void UIMain::on_tvMachines_activated( const QModelIndex& proxyIndex )
 	lMachineIcon->setPixmap( machine->icon() );
 	lMachineIcon->setVisible( !lMachineIcon->pixmap()->isNull() );
 	teMachineInfos->setHtml( machine->infos().toHtml() );
-	mRomsModel->refresh( machine, mSettings );
+	mRomsModel->refresh( machine, mSettings, seRomsFilter->text() );
+}
+
+void UIMain::on_seRomsFilter_textChanged( const QString& text )
+{
+	const QModelIndex proxyIndex = tvMachines->currentIndex();
+	const QModelIndex machineIndex = mMachineFilterModel->mapToSource( proxyIndex );
+	const MachineItem* machine = mMachineModel->itemFromIndex( machineIndex );
+	
+	mRomsModel->refresh( machine, mSettings, text );
 }
 
 void UIMain::on_tvRoms_activated( const QModelIndex& proxyIndex )
