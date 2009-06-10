@@ -287,6 +287,16 @@ public:
 	
 	QString data( MachineInfos::Type type ) const;
 	
+	iBiosList bios() const;
+	iRomList roms() const;
+	iDisplay display() const;
+	iSound sound() const;
+	iDriver driver() const;
+	iInput inputs() const;
+	iDeviceList devices() const;
+	iDipSwitchList dipSwitchs() const;
+	
+protected:
 	iBiosList mBios;
 	iRomList mRoms;
 	iDisplay mDisplay;
