@@ -90,7 +90,7 @@ QPixmap MachineItem::icon() const
 
 QBrush MachineItem::background() const
 {
-	const QString status = mInfos.mDriver.data( iDriver::Status );
+	const QString status = mInfos.driver().data( iDriver::Status );
 	const int lighter = 180;
 	QBrush brush;
 	

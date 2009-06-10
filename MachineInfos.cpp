@@ -556,3 +556,41 @@ QString MachineInfos::data( MachineInfos::Type type ) const
 	
 	return QString::null;
 }
+
+iBiosList MachineInfos::bios() const
+{
+	return mBios;
+}
+
+iRomList MachineInfos::roms() const
+{
+	return mRoms;
+}
+
+iDisplay MachineInfos::display() const
+{
+	return mDisplay;
+}
+
+iSound MachineInfos::sound() const
+{
+	return mSound;
+}
+
+iDriver MachineInfos::driver() const
+{
+	return mDriver;
+}
+
+iInput MachineInfos::inputs() const
+{ return mInputs; }
+
+iDeviceList MachineInfos::devices() const
+{
+	return mDevices;
+}
+
+iDipSwitchList MachineInfos::dipSwitchs() const
+{
+	return mDipSwitchs;
+}
