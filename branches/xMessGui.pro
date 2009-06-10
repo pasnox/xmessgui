@@ -56,11 +56,11 @@ SOURCES	= src/main.cpp \
 	src/MachineFilterModel.cpp \
 	src/Settings.cpp \
 	src/UISettings.cpp \
-	src/RomFilterModel.cpp \
 	src/RomModel.cpp \
 	src/SearchEdit.cpp \
 	src/Utils.cpp \
-	src/MachineInfos.cpp
+	src/MachineInfos.cpp \
+	src/RomFilterModel.cpp
 
 FORMS	= src/UIMain.ui \
 	src/UISettings.ui
@@ -71,11 +71,11 @@ HEADERS	= src/UIMain.h \
 	src/MachineFilterModel.h \
 	src/Settings.h \
 	src/UISettings.h \
-	src/RomFilterModel.h \
 	src/RomModel.h \
 	src/SearchEdit.h \
 	src/Utils.h \
-	src/MachineInfos.h
+	src/MachineInfos.h \
+	src/RomFilterModel.h
 QT	= core gui xml
 INCLUDEPATH	= . \
 	src

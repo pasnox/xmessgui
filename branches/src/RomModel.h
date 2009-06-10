@@ -27,7 +27,7 @@ public:
 	QString filePath( const QModelIndex& index ) const;
 
 public slots:
-	void refresh( const MachineItem* machine, const Settings* settings );
+	void refresh( const MachineItem* machine, const Settings* settings, const QString& searchWildcard );
 
 protected:
 	RomModelThread* mThread;

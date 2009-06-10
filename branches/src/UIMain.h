@@ -36,6 +36,7 @@ protected slots:
 	void on_aSettings_triggered();
 	void on_aQuit_triggered();
 	void on_tvMachines_activated( const QModelIndex& index );
+	void on_seRomsFilter_textChanged( const QString& text );
 	void on_tvRoms_activated( const QModelIndex& index );
 	void on_processQuery_error( ProcessQuery::Task task, QProcess::ProcessError error );
 	void on_processQuery_listXmlFinished( const QDomDocument& document, bool error, const QString& errorMsg, const QPoint& errorPosition );
