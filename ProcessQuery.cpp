@@ -42,17 +42,56 @@ bool ProcessQuery::startNextTask()
 			args << mMachineRomPair.first->infos().data( MachineInfos::Name )
 				<< "-skip_gameinfo"
 				<< "-skip_warnings"
-				<< "-cheat"
-				<< "-multithreading"
-				//<< "-sdlvideofps"
-				<< "-keepaspect"
-				<< "-waitvsync"
-				<< "-unevenstretch"
-				//<< "-window"
-				<< "-video" << "opengl" // soft or opengl
-				//<< "-scalemode" << "yuy2x2" // none, async, yv12, yuy2, yv12x2, yuy2x2 (-video soft only)
-				<< "-rompath" << mSettings->biosPath()
-				<< "-cart" << mMachineRomPair.second;
+				<< "-cheat";
+			
+			// performance
+			if ( mSettings->boolValue( Settings::Multithreading ) )
+			{
+				args << "-multithreading";
+			}
+			
+			if ( mSettings->boolValue( Settings::SDLFPS ) )
+			{
+				args << "-sdlvideofps";
+			}
+			
+			// video
+			args << "-video";
+			args << mSettings->stringValue( Settings::VideoMode );
+			
+			if ( mSettings->stringValue( Settings::VideoMode ) == "soft" )
+			{
+				args << "-scalemode" << mSettings->stringValue( Settings::ScaleMode );
+			}
+			
+			if ( !mSettings->boolValue( Settings::FullScreen ) )
+			{
+				args << "-window";
+			}
+			
+			if ( mSettings->boolValue( Settings::Maximize ) )
+			{
+				args << "-maximize";
+			}
+			
+			if ( mSettings->boolValue( Settings::KeepAspectRatio ) )
+			{
+				args << "-keepaspect";
+			}
+			
+			if ( mSettings->boolValue( Settings::AllowDoubleStretchFactors ) )
+			{
+				args << "-unevenstretch";
+			}
+			
+			if ( mSettings->boolValue( Settings::WaitVBLANK ) )
+			{
+				args << "-waitvsync";
+			}
+			
+			// others
+			args << "-rompath" << mSettings->stringValue( Settings::Bios ) << "-cart" << mMachineRomPair.second;
+			
 			break;
 		case ProcessQuery::ListXml:
 			args << "-listxml";
@@ -62,8 +101,19 @@ bool ProcessQuery::startNextTask()
 			break;
 	}
 	
-	emit log( tr( "Running command: %1 %2" ).arg( mSettings->binary() ).arg( "\"" +args.join( "\" \"" ) +"\"" ) );
-	start( mSettings->binary(), args );
+	for ( int i = 0; i < args.count(); i++ )
+	{
+		QString arg = args.at( i );
+		
+		if ( arg.contains( " " ) )
+		{
+			arg.prepend( "\"" ).append( "\"" );
+			args[ i ] = arg;
+		}
+	}
+	
+	emit log( tr( "Running command: %1 %2" ).arg( mSettings->stringValue( Settings::Binary ) ).arg( args.join( " " ) ) );
+	start( mSettings->stringValue( Settings::Binary ), args );
 	return true;
 }
 

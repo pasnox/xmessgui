@@ -38,7 +38,7 @@
       <bool>true</bool>
      </property>
      <property name="currentRow">
-      <number>0</number>
+      <number>-1</number>
      </property>
      <item>
       <property name="text">
@@ -56,6 +56,16 @@
       <property name="icon">
        <iconset resource="resources/resources.qrc">
         <normaloff>:/icons/find-clear-16.png</normaloff>:/icons/find-clear-16.png</iconset>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Performance</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Video</string>
       </property>
      </item>
     </widget>
@@ -158,7 +168,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="wGeneral">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -338,6 +348,159 @@
           <size>
            <width>20</width>
            <height>132</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="wPerformance">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QCheckBox" name="cbMultithreading">
+         <property name="text">
+          <string>Activate multithreading</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="cbSDLFPS">
+         <property name="text">
+          <string>Show SDL FPS</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>173</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="wVideo">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="lVideoMode">
+           <property name="text">
+            <string>Video mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbVideoMode">
+           <item>
+            <property name="text">
+             <string>soft</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>opengl</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="lScaleMode">
+           <property name="text">
+            <string>Scale mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="cbScaleMode">
+           <item>
+            <property name="text">
+             <string>none</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>async</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>yv12</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>yuy2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>yv12x2</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>yuy2x2</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="cbFullScreen">
+         <property name="text">
+          <string>FullScreen</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="cbMaximize">
+         <property name="text">
+          <string>Maximize</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="cbKeepAspectRatio">
+         <property name="text">
+          <string>Keep aspect ratio</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="cbAllowDoubleStretchFactors">
+         <property name="text">
+          <string>Allow non-integer stretch factors</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="cbWaitVBLANK">
+         <property name="text">
+          <string>Wait for VBLANK</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>32</height>
           </size>
          </property>
         </spacer>

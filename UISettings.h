@@ -31,6 +31,7 @@ protected slots:
 	void on_cbRomsPath_currentIndexChanged( int index );
 	void on_tbRomsPathSet_clicked();
 	void on_tbRomsPath_clicked();
+	void on_cbVideoMode_currentIndexChanged( const QString& text );
 	void on_dbbButtons_clicked( QAbstractButton* button );
 	void accept();
 };

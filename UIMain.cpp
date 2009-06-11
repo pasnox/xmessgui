@@ -51,11 +51,11 @@ UIMain::~UIMain()
 	
 	if ( machineItem )
 	{
-		mSettings->setCurrentMachine( machineItem->infos().data( MachineInfos::Name ) );
+		mSettings->setStringValue( Settings::CurrentMachine, machineItem->infos().data( MachineInfos::Name ) );
 	}
 	
-	mSettings->setMachineFilter( seMachinesFilter->text() );
-	mSettings->setRomsFilter( seRomsFilter->text() );
+	mSettings->setStringValue( Settings::MachineFilter, seMachinesFilter->text() );
+	mSettings->setStringValue( Settings::RomsFilter, seRomsFilter->text() );
 	
 	delete mSettings;
 }
@@ -67,15 +67,15 @@ void UIMain::appendLog( const QString& message )
 
 void UIMain::reloadSettings()
 {
-	seMachinesFilter->setText( mSettings->machineFilter() );
-	seRomsFilter->setText( mSettings->romsFilter() );
+	seMachinesFilter->setText( mSettings->stringValue( Settings::MachineFilter ) );
+	seRomsFilter->setText( mSettings->stringValue( Settings::RomsFilter) );
 	
 	mProcessQuery->listXml();
 }
 
 void UIMain::machineModel_ready()
 {
-	const QString name = mSettings->currentMachine();
+	const QString name = mSettings->stringValue( Settings::CurrentMachine );
 	const QModelIndex machineIndex = mMachineModel->machineIndex( name );
 	const QModelIndex proxyIndex = mMachineFilterModel->mapFromSource( machineIndex );
 	
@@ -161,6 +161,11 @@ void UIMain::on_tvRoms_activated( const QModelIndex& proxyIndex )
 	
 	if ( machineItem )
 	{
+		if ( isVisible() )
+		{
+			setVisible( false );
+		}
+		
 		mProcessQuery->startRom( machineItem, mRomsModel->filePath( index ) );
 	}
 }
@@ -169,6 +174,17 @@ void UIMain::on_processQuery_error( ProcessQuery::Task task, QProcess::ProcessEr
 {
 	const QString message = tr( "*** Error %1 on task %2" ).arg( error ).arg( task );
 	appendLog( message );
+}
+
+void UIMain::on_processQuery_finished( int exitCode, QProcess::ExitStatus exitStatus )
+{
+	const QString message = tr( "*** Finished with exitCode %1 and exitStatus %2" ).arg( exitCode ).arg( exitStatus );
+	appendLog( message );
+	
+	if ( !isVisible() )
+	{
+		setVisible( true );
+	}
 }
 
 void UIMain::on_processQuery_listXmlFinished( const QDomDocument& document, bool error, const QString& errorMsg, const QPoint& errorPosition )

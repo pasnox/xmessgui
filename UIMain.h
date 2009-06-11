@@ -40,6 +40,7 @@ protected slots:
 	void on_seRomsFilter_searchChanged( const QString& text );
 	void on_tvRoms_activated( const QModelIndex& index );
 	void on_processQuery_error( ProcessQuery::Task task, QProcess::ProcessError error );
+	void on_processQuery_finished( int exitCode, QProcess::ExitStatus exitStatus );
 	void on_processQuery_listXmlFinished( const QDomDocument& document, bool error, const QString& errorMsg, const QPoint& errorPosition );
 };
 

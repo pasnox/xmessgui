@@ -36,14 +36,27 @@ UISettings::~UISettings()
 void UISettings::initSettings()
 {
 	// general
-	leBinaryFile->setText( mSettings->binary() );
-	leBiosPath->setText( mSettings->biosPath() );
+	leBinaryFile->setText( mSettings->stringValue( Settings::Binary ) );
+	leBiosPath->setText( mSettings->stringValue( Settings::Bios ) );
 	
 	// roms
 	mRomsPaths = mSettings->romsPaths();
 	const int index = cbRomsPath->currentIndex();
 	const QString name = cbRomsPath->itemData( index ).toString();
 	leRomsPath->setText( mRomsPaths.value( name ) );
+	
+	// performance
+	cbMultithreading->setChecked( mSettings->boolValue( Settings::Multithreading ) );
+	cbSDLFPS->setChecked( mSettings->boolValue( Settings::SDLFPS ) );
+	
+	// video
+	cbVideoMode->setCurrentIndex( cbVideoMode->findText( mSettings->stringValue( Settings::VideoMode ) ) );
+	cbScaleMode->setCurrentIndex( cbScaleMode->findText( mSettings->stringValue( Settings::ScaleMode ) ) );
+	cbFullScreen->setChecked( mSettings->boolValue( Settings::FullScreen ) );
+	cbMaximize->setChecked( mSettings->boolValue( Settings::Maximize ) );
+	cbKeepAspectRatio->setChecked( mSettings->boolValue( Settings::KeepAspectRatio ) );
+	cbAllowDoubleStretchFactors->setChecked( mSettings->boolValue( Settings::AllowDoubleStretchFactors ) );
+	cbWaitVBLANK->setChecked( mSettings->boolValue( Settings::WaitVBLANK ) );
 }
 
 void UISettings::restoreDefaults()
@@ -55,6 +68,16 @@ void UISettings::restoreDefaults()
 	// roms
 	mRomsPaths.clear();
 	leRomsPath->clear();
+	
+	// performance
+	cbMultithreading->setChecked( false );
+	cbSDLFPS->setChecked( false );
+	
+	// video
+	cbVideoMode->setCurrentIndex( cbVideoMode->findText( "opengl" ) );
+	cbScaleMode->setCurrentIndex( cbScaleMode->findText( "none" ) );
+	cbFullScreen->setChecked( false );
+	cbMaximize->setChecked( false );
 }
 
 QString UISettings::getOpenFileName( const QString& text, const QString& fileName, const QString& filter )
@@ -112,6 +135,11 @@ void UISettings::on_tbRomsPath_clicked()
 	}
 }
 
+void UISettings::on_cbVideoMode_currentIndexChanged( const QString& text )
+{
+	cbScaleMode->setEnabled( text == "soft" );
+}
+
 void UISettings::on_dbbButtons_clicked( QAbstractButton* button )
 {
 	if ( dbbButtons->standardButton( button ) == QDialogButtonBox::RestoreDefaults )
@@ -122,9 +150,27 @@ void UISettings::on_dbbButtons_clicked( QAbstractButton* button )
 
 void UISettings::accept()
 {
-	mSettings->setBinary( leBinaryFile->text() );
-	mSettings->setBiosPath( leBiosPath->text() );
+	// general
+	mSettings->setStringValue( Settings::Binary, leBinaryFile->text() );
+	mSettings->setStringValue( Settings::Bios, leBiosPath->text() );
+	
+	// roms
 	mSettings->setRomsPaths( mRomsPaths );
+	
+	// performance
+	mSettings->setBoolValue( Settings::Multithreading, cbMultithreading->isChecked() );
+	mSettings->setBoolValue( Settings::SDLFPS, cbSDLFPS->isChecked() );
+	
+	// video
+	mSettings->setStringValue( Settings::VideoMode, cbVideoMode->currentText() );
+	mSettings->setStringValue( Settings::ScaleMode, cbScaleMode->currentText() );
+	mSettings->setBoolValue( Settings::FullScreen, cbFullScreen->isChecked() );
+	mSettings->setBoolValue( Settings::Maximize, cbMaximize->isChecked() );
+	
+	mSettings->setBoolValue( Settings::KeepAspectRatio, cbKeepAspectRatio->isChecked() );
+	mSettings->setBoolValue( Settings::AllowDoubleStretchFactors, cbAllowDoubleStretchFactors->isChecked() );
+	mSettings->setBoolValue( Settings::WaitVBLANK, cbWaitVBLANK->isChecked() );
+	
 	mSettings->save();
 	
 	QDialog::accept();

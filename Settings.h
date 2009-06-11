@@ -7,6 +7,28 @@
 class Settings
 {
 public:
+	enum StringType
+	{
+		Binary,
+		Bios,
+		CurrentMachine,
+		MachineFilter,
+		RomsFilter,
+		VideoMode,
+		ScaleMode
+	};
+	
+	enum BoolType
+	{
+		Multithreading,
+		SDLFPS,
+		FullScreen,
+		Maximize,
+		KeepAspectRatio,
+		AllowDoubleStretchFactors,
+		WaitVBLANK
+	};
+	
 	Settings();
 	virtual ~Settings();
 	
@@ -15,33 +37,35 @@ public:
 	
 	bool isInitialized() const;
 	
-	QString binary() const;
-	void setBinary( const QString& binary );
-	
-	QString biosPath() const;
-	void setBiosPath( const QString& binary );
-	
 	QMap<QString, QString> romsPaths() const;
 	QString romsPath( const QString& name, const QString& cloneName = QString::null ) const;
 	void setRomsPaths( const QMap<QString, QString>& paths );
 	void setRomsPath( const QString& name, const QString& path );
 	
-	QString currentMachine() const;
-	void setCurrentMachine( const QString& name );
+	QString stringValue( Settings::StringType type ) const;
+	void setStringValue( Settings::StringType type, const QString& value );
 	
-	QString machineFilter() const;
-	void setMachineFilter( const QString& filter );
-	
-	QString romsFilter() const;
-	void setRomsFilter( const QString& filter );
+	bool boolValue( Settings::BoolType type ) const;
+	void setBoolValue( Settings::BoolType type, bool value );
 	
 protected:
 	QString mBinary;
-	QString mBiosPath;
+	QString mBios;
 	QMap<QString, QString> mRomsPaths;
 	QString mCurrentMachine;
 	QString mMachineFilter;
 	QString mRomsFilter;
+	// performance
+	bool mMultithreading;
+	bool mSDLFPS;
+	// video
+	QString mVideoMode;
+	QString mScaleMode;
+	bool mFullScreen;
+	bool mMaximize;
+	bool mKeepAspectRatio;
+	bool mAllowDoubleStretchFactors;
+	bool mWaitVBLANK;
 };
 
 #endif // SETTINGS_H

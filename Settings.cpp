@@ -5,7 +5,7 @@
 #include <QDir>
 
 Settings::Settings()
-{
+{	
 	load();
 }
 
@@ -20,7 +20,7 @@ bool Settings::load()
 	
 	settings.beginGroup( qApp->applicationName() );
 	mBinary = settings.value( "Binary", "sdlmess" ).toString();
-	mBiosPath = settings.value( "Bios", QString( "%1/.%2/bios" ).arg( QDir::homePath() ).arg( qApp->applicationName() ) ).toString();
+	mBios = settings.value( "Bios", QString( "%1/.%2/bios" ).arg( QDir::homePath() ).arg( qApp->applicationName() ) ).toString();
 	mCurrentMachine = settings.value( "CurrentMachine" ).toString();
 	mMachineFilter = settings.value( "MachineFilter" ).toString();
 	mRomsFilter = settings.value( "RomsFilter" ).toString();
@@ -34,6 +34,23 @@ bool Settings::load()
 	}
 	settings.endGroup();
 	
+	// performance
+	settings.beginGroup( "Performance" );
+	mMultithreading = settings.value( "Multithreading", false ).toBool();
+	mSDLFPS = settings.value( "SDLFPS", false ).toBool();
+	settings.endGroup();
+	
+	// video
+	settings.beginGroup( "Video" );
+	mVideoMode = settings.value( "VideoMode", "opengl" ).toString();
+	mScaleMode = settings.value( "ScaleMode", "none" ).toString();
+	mFullScreen = settings.value( "FullScreen", false ).toBool();
+	mMaximize = settings.value( "Maximize", false ).toBool();
+	mKeepAspectRatio = settings.value( "KeepAspectRatio", false ).toBool();
+	mAllowDoubleStretchFactors = settings.value( "AllowDoubleStretchFactors", false ).toBool();
+	mWaitVBLANK = settings.value( "WaitVBLANK", false ).toBool();
+	settings.endGroup();
+	
 	return true;
 }
 
@@ -43,7 +60,7 @@ bool Settings::save()
 	
 	settings.beginGroup( qApp->applicationName() );
 	settings.setValue( "Binary", mBinary );
-	settings.setValue( "Bios", mBiosPath );
+	settings.setValue( "Bios", mBios );
 	settings.setValue( "CurrentMachine", mCurrentMachine );
 	settings.setValue( "MachineFilter", mMachineFilter );
 	settings.setValue( "RomsFilter", mRomsFilter );
@@ -57,6 +74,24 @@ bool Settings::save()
 	}
 	settings.endGroup();
 	
+	// performance
+	settings.beginGroup( "Performance" );
+	settings.setValue( "Multithreading", mMultithreading );
+	settings.setValue( "SDLFPS", mSDLFPS );
+	settings.endGroup();
+	
+	// video
+	settings.beginGroup( "Video" );
+	settings.setValue( "VideoMode", mVideoMode );
+	settings.setValue( "ScaleMode", mScaleMode );
+	settings.setValue( "FullScreen", mFullScreen );
+	settings.setValue( "Maximize", mMaximize );
+	
+	settings.setValue( "KeepAspectRatio", mKeepAspectRatio );
+	settings.setValue( "AllowDoubleStretchFactors", mAllowDoubleStretchFactors );
+	settings.setValue( "WaitVBLANK", mWaitVBLANK );
+	settings.endGroup();
+	
 	return settings.isWritable();
 }
 
@@ -65,26 +100,6 @@ bool Settings::isInitialized() const
 	QSettings settings;
 	
 	return !settings.allKeys().isEmpty();
-}
-
-QString Settings::binary() const
-{
-	return mBinary;
-}
-
-void Settings::setBinary( const QString& binary )
-{
-	mBinary = binary;
-}
-
-QString Settings::biosPath() const
-{
-	return mBiosPath;
-}
-
-void Settings::setBiosPath( const QString& path )
-{
-	mBiosPath = path;
 }
 
 QMap<QString, QString> Settings::romsPaths() const
@@ -114,32 +129,127 @@ void Settings::setRomsPath( const QString& name, const QString& path )
 	mRomsPaths[ name ] = path;
 }
 
-QString Settings::currentMachine() const
+QString Settings::stringValue( Settings::StringType type ) const
 {
-	return mCurrentMachine;
+	switch ( type )
+	{
+		case Settings::Binary:
+			return mBinary;
+			break;
+		case Settings::Bios:
+			return mBios;
+			break;
+		case Settings::CurrentMachine:
+			return mCurrentMachine;
+			break;
+		case Settings::MachineFilter:
+			return mMachineFilter;
+			break;
+		case Settings::RomsFilter:
+			return mRomsFilter;
+			break;
+		case Settings::VideoMode:
+			return mVideoMode;
+			break;
+		case Settings::ScaleMode:
+			return mScaleMode;
+			break;
+	}
+	
+	Q_ASSERT( 0 );
+	return QString::null;
 }
 
-void Settings::setCurrentMachine( const QString& name )
+void Settings::setStringValue( Settings::StringType type, const QString& value )
 {
-	mCurrentMachine = name;
+
+	switch ( type )
+	{
+		case Settings::Binary:
+			mBinary = value;
+			break;
+		case Settings::Bios:
+			mBios = value;
+			break;
+		case Settings::CurrentMachine:
+			mCurrentMachine = value;
+			break;
+		case Settings::MachineFilter:
+			mMachineFilter = value;
+			break;
+		case Settings::RomsFilter:
+			mRomsFilter = value;
+			break;
+		case Settings::VideoMode:
+			mVideoMode = value;
+			break;
+		case Settings::ScaleMode:
+			mScaleMode = value;
+			break;
+		default:
+			Q_ASSERT( 0 );
+			break;
+	}
 }
 
-QString Settings::machineFilter() const
+bool Settings::boolValue( Settings::BoolType type ) const
 {
-	return mMachineFilter;
+	switch ( type )
+	{
+		case Settings::Multithreading:
+			return mMultithreading;
+			break;
+		case Settings::SDLFPS:
+			return mSDLFPS;
+			break;
+		case Settings::FullScreen:
+			return mFullScreen;
+			break;
+		case Settings::Maximize:
+			return mMaximize;
+			break;
+		case Settings::KeepAspectRatio:
+			return mKeepAspectRatio;
+			break;
+		case Settings::AllowDoubleStretchFactors:
+			return mAllowDoubleStretchFactors;
+			break;
+		case Settings::WaitVBLANK:
+			return mWaitVBLANK;
+			break;
+	}
+	
+	Q_ASSERT( 0 );
+	return false;
 }
 
-void Settings::setMachineFilter( const QString& filter )
+void Settings::setBoolValue( Settings::BoolType type, bool value )
 {
-	mMachineFilter = filter;
-}
-
-QString Settings::romsFilter() const
-{
-	return mRomsFilter;
-}
-
-void Settings::setRomsFilter( const QString& filter )
-{
-	mRomsFilter = filter;
+	switch ( type )
+	{
+		case Settings::Multithreading:
+			mMultithreading = value;
+			break;
+		case Settings::SDLFPS:
+			mSDLFPS = value;
+			break;
+		case Settings::FullScreen:
+			mFullScreen = value;
+			break;
+		case Settings::Maximize:
+			mMaximize = value;
+			break;
+		case Settings::KeepAspectRatio:
+			mKeepAspectRatio = value;
+			break;
+		case Settings::AllowDoubleStretchFactors:
+			mAllowDoubleStretchFactors = value;
+			break;
+		case Settings::WaitVBLANK:
+			mWaitVBLANK = value;
+			break;
+		default:
+			Q_ASSERT( 0 );
+			break;
+	}
 }
