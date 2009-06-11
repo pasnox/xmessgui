@@ -29,11 +29,19 @@ public:
 	QString currentMachine() const;
 	void setCurrentMachine( const QString& name );
 	
+	QString machineFilter() const;
+	void setMachineFilter( const QString& filter );
+	
+	QString romsFilter() const;
+	void setRomsFilter( const QString& filter );
+	
 protected:
 	QString mBinary;
 	QString mBiosPath;
 	QMap<QString, QString> mRomsPaths;
 	QString mCurrentMachine;
+	QString mMachineFilter;
+	QString mRomsFilter;
 };
 
 #endif // SETTINGS_H

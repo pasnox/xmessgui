@@ -22,6 +22,8 @@ bool Settings::load()
 	mBinary = settings.value( "Binary", "sdlmess" ).toString();
 	mBiosPath = settings.value( "Bios", QString( "%1/.%2/bios" ).arg( QDir::homePath() ).arg( qApp->applicationName() ) ).toString();
 	mCurrentMachine = settings.value( "CurrentMachine" ).toString();
+	mMachineFilter = settings.value( "MachineFilter" ).toString();
+	mRomsFilter = settings.value( "RomsFilter" ).toString();
 	settings.endGroup();
 	
 	settings.beginGroup( "Roms" );
@@ -43,6 +45,8 @@ bool Settings::save()
 	settings.setValue( "Binary", mBinary );
 	settings.setValue( "Bios", mBiosPath );
 	settings.setValue( "CurrentMachine", mCurrentMachine );
+	settings.setValue( "MachineFilter", mMachineFilter );
+	settings.setValue( "RomsFilter", mRomsFilter );
 	settings.endGroup();
 	
 	settings.beginGroup( "Roms" );
@@ -118,4 +122,24 @@ QString Settings::currentMachine() const
 void Settings::setCurrentMachine( const QString& name )
 {
 	mCurrentMachine = name;
+}
+
+QString Settings::machineFilter() const
+{
+	return mMachineFilter;
+}
+
+void Settings::setMachineFilter( const QString& filter )
+{
+	mMachineFilter = filter;
+}
+
+QString Settings::romsFilter() const
+{
+	return mRomsFilter;
+}
+
+void Settings::setRomsFilter( const QString& filter )
+{
+	mRomsFilter = filter;
 }

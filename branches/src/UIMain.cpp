@@ -37,8 +37,9 @@ UIMain::UIMain( QWidget* parent )
 	tvRoms->header()->QHeaderView::setResizeMode( 3, QHeaderView::ResizeToContents );
 	
 	connect( mProcessQuery, SIGNAL( log( const QString& ) ), this, SLOT( appendLog( const QString& ) ) );
-	connect( seMachinesFilter, SIGNAL( textChanged( const QString& ) ), mMachineFilterModel, SLOT( setFilterWildcard( const QString& ) ) );
 	connect( mMachineModel, SIGNAL( ready() ), this, SLOT( machineModel_ready() ) );
+	connect( seMachinesFilter, SIGNAL( searchChanged( const QString& ) ), mMachineFilterModel, SLOT( setFilterWildcard( const QString& ) ) );
+	connect( mRomsModel, SIGNAL( ready() ), this, SLOT( romsModel_ready() ) );
 	
 	reloadSettings();
 }
@@ -53,6 +54,9 @@ UIMain::~UIMain()
 		mSettings->setCurrentMachine( machineItem->infos().data( MachineInfos::Name ) );
 	}
 	
+	mSettings->setMachineFilter( seMachinesFilter->text() );
+	mSettings->setRomsFilter( seRomsFilter->text() );
+	
 	delete mSettings;
 }
 
@@ -63,6 +67,9 @@ void UIMain::appendLog( const QString& message )
 
 void UIMain::reloadSettings()
 {
+	seMachinesFilter->setText( mSettings->machineFilter() );
+	seRomsFilter->setText( mSettings->romsFilter() );
+	
 	mProcessQuery->listXml();
 }
 
@@ -72,6 +79,7 @@ void UIMain::machineModel_ready()
 	const QModelIndex machineIndex = mMachineModel->machineIndex( name );
 	const QModelIndex proxyIndex = mMachineFilterModel->mapFromSource( machineIndex );
 	
+	mMachineFilterModel->setFilterWildcard( seMachinesFilter->text() );
 	tvMachines->setCurrentIndex( proxyIndex );
 	tvMachines->scrollTo( proxyIndex, QAbstractItemView::PositionAtTop );
 	
@@ -79,6 +87,13 @@ void UIMain::machineModel_ready()
 	{
 		on_tvMachines_activated( proxyIndex );
 	}
+}
+
+void UIMain::romsModel_ready()
+{
+	const int count = mRomsModel->rowCount();
+	
+	lTotalRoms->setText( tr( "%1 roms found." ).arg( count ) );
 }
 
 void UIMain::on_aSettings_triggered()
@@ -125,15 +140,17 @@ void UIMain::on_tvMachines_activated( const QModelIndex& proxyIndex )
 	lMachineIcon->setVisible( !lMachineIcon->pixmap()->isNull() );
 	teMachineInfos->setHtml( machine->infos().toHtml() );
 	mRomsModel->refresh( machine, mSettings, seRomsFilter->text() );
+	lTotalRoms->setText( tr( "Listing roms..." ) );
 }
 
-void UIMain::on_seRomsFilter_textChanged( const QString& text )
+void UIMain::on_seRomsFilter_searchChanged( const QString& text )
 {
 	const QModelIndex proxyIndex = tvMachines->currentIndex();
 	const QModelIndex machineIndex = mMachineFilterModel->mapToSource( proxyIndex );
 	const MachineItem* machine = mMachineModel->itemFromIndex( machineIndex );
 	
 	mRomsModel->refresh( machine, mSettings, text );
+	lTotalRoms->setText( tr( "Searching roms..." ) );
 }
 
 void UIMain::on_tvRoms_activated( const QModelIndex& proxyIndex )
