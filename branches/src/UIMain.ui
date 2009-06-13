@@ -79,18 +79,28 @@
      <x>0</x>
      <y>0</y>
      <width>910</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="mFile">
+   <widget class="QMenu" name="mModule">
     <property name="title">
-     <string>File</string>
+     <string>Module</string>
     </property>
     <addaction name="aSettings"/>
     <addaction name="separator"/>
+    <addaction name="aVerifyRoms"/>
+    <addaction name="separator"/>
     <addaction name="aQuit"/>
    </widget>
-   <addaction name="mFile"/>
+   <widget class="QMenu" name="mMachine">
+    <property name="title">
+     <string>Machine</string>
+    </property>
+    <addaction name="aStartMachine"/>
+    <addaction name="aStartMachineRom"/>
+   </widget>
+   <addaction name="mModule"/>
+   <addaction name="mMachine"/>
   </widget>
   <widget class="QDockWidget" name="dwLog">
    <property name="windowTitle">
@@ -580,6 +590,21 @@
   <action name="aSettings">
    <property name="text">
     <string>Settings...</string>
+   </property>
+  </action>
+  <action name="aVerifyRoms">
+   <property name="text">
+    <string>Verify roms...</string>
+   </property>
+  </action>
+  <action name="aStartMachine">
+   <property name="text">
+    <string>Start</string>
+   </property>
+  </action>
+  <action name="aStartMachineRom">
+   <property name="text">
+    <string>Start rom</string>
    </property>
   </action>
  </widget>

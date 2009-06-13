@@ -5,38 +5,38 @@ Options:
 #
 # CORE CONFIGURATION OPTIONS
 #
--readconfig          enable loading of configuration files
+//-readconfig          enable loading of configuration files
 
 #
 # CORE SEARCH PATH OPTIONS
 #
--rompath             path to ROMsets and hard disk images
--hashpath            path to hash files
--samplepath          path to samplesets
--artpath             path to artwork files
--ctrlrpath           path to controller definitions
--inipath             path to ini files
--fontpath            path to font files
--cheatpath           path to cheat files
--crsshairpath        path to crosshair files
+//-rompath             path to ROMsets and hard disk images
+//-hashpath            path to hash files
+//-samplepath          path to samplesets
+//-artpath             path to artwork files
+//-ctrlrpath           path to controller definitions
+//-inipath             path to ini files
+//-fontpath            path to font files
+//-cheatpath           path to cheat files
+//-crsshairpath        path to crosshair files
 
 #
 # CORE OUTPUT DIRECTORY OPTIONS
 #
--cfg_directory       directory to save configurations
--nvram_directory     directory to save nvram contents
--memcard_directory   directory to save memory card contents
--input_directory     directory to save input device logs
--state_directory     directory to save states
--snapshot_directory  directory to save screenshots
--diff_directory      directory to save hard drive image difference files
--comment_directory   directory to save debugger comments
+//-cfg_directory       directory to save configurations
+//-nvram_directory     directory to save nvram contents
+//-memcard_directory   directory to save memory card contents
+//-input_directory     directory to save input device logs
+//-state_directory     directory to save states
+//-snapshot_directory  directory to save screenshots
+//-diff_directory      directory to save hard drive image difference files
+//-comment_directory   directory to save debugger comments
 
 #
 # CORE STATE/PLAYBACK OPTIONS
 #
 -state               saved state to load
--autosave            enable automatic restore at startup, and automatic save at exit time
+//-autosave            enable automatic restore at startup, and automatic save at exit time
 -playback            playback an input file
 -record              record an input file
 -mngwrite            optional filename to write a MNG movie of the current session

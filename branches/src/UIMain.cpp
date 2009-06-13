@@ -8,6 +8,7 @@
 #include "RomFilterModel.h"
 
 #include <QFileDialog>
+#include <QMessageBox>
 
 #include <QDebug>
 
@@ -103,9 +104,50 @@ void UIMain::on_aSettings_triggered()
 	dlg->open();
 }
 
+void UIMain::on_aVerifyRoms_triggered()
+{
+	mProcessQuery->verifyRoms();
+}
+
 void UIMain::on_aQuit_triggered()
 {
 	qApp->quit();
+}
+
+void UIMain::on_aStartMachine_triggered()
+{
+	const QModelIndex proxyIndex = tvRoms->currentIndex();
+	const QModelIndex index = mRomFilterModel->mapToSource( proxyIndex );
+	const QModelIndex machineIndex = mMachineFilterModel->mapToSource( tvMachines->currentIndex() );
+	MachineItem* machineItem = mMachineModel->itemFromIndex( machineIndex );
+	
+	if ( machineItem )
+	{
+		if ( isVisible() )
+		{
+			setVisible( false );
+		}
+		
+		mProcessQuery->startMachine( machineItem );
+	}
+}
+
+void UIMain::on_aStartMachineRom_triggered()
+{
+	const QModelIndex proxyIndex = tvRoms->currentIndex();
+	const QModelIndex index = mRomFilterModel->mapToSource( proxyIndex );
+	const QModelIndex machineIndex = mMachineFilterModel->mapToSource( tvMachines->currentIndex() );
+	MachineItem* machineItem = mMachineModel->itemFromIndex( machineIndex );
+	
+	if ( machineItem )
+	{
+		if ( isVisible() )
+		{
+			setVisible( false );
+		}
+		
+		mProcessQuery->startMachineRom( machineItem, mRomModel->filePath( index ) );
+	}
 }
 
 void UIMain::on_tvMachines_activated( const QModelIndex& proxyIndex )
@@ -155,19 +197,8 @@ void UIMain::on_seRomsFilter_searchChanged( const QString& text )
 
 void UIMain::on_tvRoms_activated( const QModelIndex& proxyIndex )
 {
-	const QModelIndex index = mRomFilterModel->mapToSource( proxyIndex );
-	const QModelIndex machineIndex = mMachineFilterModel->mapToSource( tvMachines->currentIndex() );
-	MachineItem* machineItem = mMachineModel->itemFromIndex( machineIndex );
-	
-	if ( machineItem )
-	{
-		if ( isVisible() )
-		{
-			setVisible( false );
-		}
-		
-		mProcessQuery->startRom( machineItem, mRomModel->filePath( index ) );
-	}
+	Q_UNUSED( proxyIndex );
+	aStartMachineRom->trigger();
 }
 
 void UIMain::on_processQuery_error( ProcessQuery::Task task, QProcess::ProcessError error )
@@ -207,4 +238,22 @@ void UIMain::on_processQuery_listXmlFinished( const QDomDocument& document, bool
 		.arg( count.clones );
 	
 	lTotalMachines->setText( text );
+}
+
+void UIMain::on_processQuery_verifyRomsFinished( const QString& buffer )
+{
+	const QString title = tr( "Verify roms result..." );
+	
+	if ( buffer.isEmpty() )
+	{
+		QMessageBox::warning( window(), title, tr( "An error occur while verifying roms." ) );
+	}
+	else
+	{
+		QRegExp rx( "(\\d+ romsets found,.*.)" );
+		const int index = rx.indexIn( buffer );
+		const QString message = index != -1 ? rx.cap( 1 ) : tr( "Can't found verify result." );
+		
+		QMessageBox::information( window(), title, message );
+	}
 }

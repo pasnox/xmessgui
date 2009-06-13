@@ -20,17 +20,21 @@ public:
 	enum Task
 	{
 		IDLE,
-		StartRom,
-		ListXml
+		StartMachine,
+		StartMachineRom,
+		ListXml,
+		VerifyRoms
 	};
 	
 	ProcessQuery( Settings* settings, QObject* parent = 0 );
 	virtual ~ProcessQuery();
 	
-	void startRom( MachineItem* machine, const QString& filePath );
+	void startMachine( MachineItem* machine );
+	void startMachineRom( MachineItem* machine, const QString& filePath );
 	
 public slots:
 	void listXml();
+	void verifyRoms();
 
 protected:
 	Settings* mSettings;
@@ -50,6 +54,7 @@ signals:
 	void log( const QString& message );
 	void error( ProcessQuery::Task task, QProcess::ProcessError error );
 	void listXmlFinished( const QDomDocument& document, bool error, const QString& errorMsg, const QPoint& errorPosition );
+	void verifyRomsFinished( const QString& buffer );
 };
 
 #endif // PROCESSQUERY_H

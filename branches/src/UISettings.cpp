@@ -62,6 +62,9 @@ void UISettings::initSettings()
 	cbSkipGameInformations->setChecked( mSettings->boolValue( Settings::SkipGameInformations ) );
 	cbSkipWarnings->setChecked( mSettings->boolValue( Settings::SkipWarnings ) );
 	cbCheat->setChecked( mSettings->boolValue( Settings::Cheat ) );
+	
+	// states
+	cbAutoSave->setChecked( mSettings->boolValue( Settings::AutoSave ) );
 }
 
 void UISettings::restoreDefaults()
@@ -91,6 +94,9 @@ void UISettings::restoreDefaults()
 	cbSkipGameInformations->setChecked( false );
 	cbSkipWarnings->setChecked( false );
 	cbCheat->setChecked( false );
+	
+	// states
+	cbAutoSave->setChecked( false );
 }
 
 QString UISettings::getOpenFileName( const QString& text, const QString& fileName, const QString& filter )
@@ -187,6 +193,9 @@ void UISettings::accept()
 	mSettings->setBoolValue( Settings::SkipGameInformations, cbSkipGameInformations->isChecked() );
 	mSettings->setBoolValue( Settings::SkipWarnings, cbSkipWarnings->isChecked() );
 	mSettings->setBoolValue( Settings::Cheat, cbCheat->isChecked() );
+	
+	// states
+	mSettings->setBoolValue( Settings::AutoSave, cbAutoSave->isChecked() );
 	
 	mSettings->save();
 	

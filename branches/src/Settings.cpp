@@ -58,6 +58,11 @@ bool Settings::load()
 	mCheat = settings.value( "Cheat", false ).toBool();
 	settings.endGroup();
 	
+	// states
+	settings.beginGroup( "States" );
+	mAutoSave = settings.value( "AutoSave", false ).toBool();
+	settings.endGroup();
+	
 	return true;
 }
 
@@ -103,6 +108,11 @@ bool Settings::save()
 	settings.setValue( "SkipGameInformations", mSkipGameInformations );
 	settings.setValue( "SkipWarnings", mSkipWarnings );
 	settings.setValue( "Cheat", mCheat );
+	settings.endGroup();
+	
+	// misc
+	settings.beginGroup( "States" );
+	settings.setValue( "AutoSave", mAutoSave );
 	settings.endGroup();
 	
 	return settings.isWritable();
@@ -239,6 +249,9 @@ bool Settings::boolValue( Settings::BoolType type ) const
 		case Settings::Cheat:
 			return mCheat;
 			break;
+		case Settings::AutoSave:
+			return mAutoSave;
+			break;
 	}
 	
 	Q_ASSERT( 0 );
@@ -278,6 +291,9 @@ void Settings::setBoolValue( Settings::BoolType type, bool value )
 			break;
 		case Settings::Cheat:
 			mCheat = value;
+			break;
+		case Settings::AutoSave:
+			mAutoSave = value;
 			break;
 		default:
 			Q_ASSERT( 0 );
