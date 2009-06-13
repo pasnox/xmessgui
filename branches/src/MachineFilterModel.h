@@ -20,6 +20,9 @@ protected:
 	
 protected slots:
 	void machineModel_ready();
+
+signals:
+	void ready();
 };
 
 #endif // MACHINEFILTERMODEL_H

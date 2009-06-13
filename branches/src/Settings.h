@@ -26,7 +26,10 @@ public:
 		Maximize,
 		KeepAspectRatio,
 		AllowDoubleStretchFactors,
-		WaitVBLANK
+		WaitVBLANK,
+		SkipGameInformations,
+		SkipWarnings,
+		Cheat
 	};
 	
 	Settings();
@@ -66,6 +69,9 @@ protected:
 	bool mKeepAspectRatio;
 	bool mAllowDoubleStretchFactors;
 	bool mWaitVBLANK;
+	bool mSkipGameInformations;
+	bool mSkipWarnings;
+	bool mCheat;
 };
 
 #endif // SETTINGS_H
