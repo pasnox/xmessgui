@@ -73,6 +73,11 @@
        <string>Misc</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>States</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="0" column="1">
@@ -173,7 +178,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="wGeneral">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -512,7 +517,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page">
+     <widget class="QWidget" name="wMisc">
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <widget class="QCheckBox" name="cbSkipGameInformations">
@@ -544,6 +549,30 @@
           <size>
            <width>20</width>
            <height>146</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="wStates">
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QCheckBox" name="cbAutoSave">
+         <property name="text">
+          <string>Auto save state (auto laod at startup &amp; auto save at shut down)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>200</height>
           </size>
          </property>
         </spacer>

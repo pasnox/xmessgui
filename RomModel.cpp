@@ -110,7 +110,7 @@ protected:
 		}
 		
 		QStringList filters;
-	
+		
 		foreach ( const iDevice& device, mMachine->infos().devices() )
 		{
 			foreach ( const QString& extension, device.extensions() )

@@ -23,10 +23,16 @@ ProcessQuery::~ProcessQuery()
 {
 }
 
-void ProcessQuery::startRom( MachineItem* machine, const QString& filePath )
+void ProcessQuery::startMachine( MachineItem* machine )
 {
-	mMachineRomPair = qMakePair( machine, filePath );
-	addTask( ProcessQuery::StartRom );
+	mMachineRomPair = MachineRomPair( machine, QString::null );
+	addTask( ProcessQuery::StartMachine );
+}
+
+void ProcessQuery::startMachineRom( MachineItem* machine, const QString& filePath )
+{
+	mMachineRomPair = MachineRomPair( machine, filePath );
+	addTask( ProcessQuery::StartMachineRom );
 }
 
 bool ProcessQuery::startNextTask()
@@ -41,7 +47,8 @@ bool ProcessQuery::startNextTask()
 	
 	switch ( mCurrentTask )
 	{
-		case ProcessQuery::StartRom:
+		case ProcessQuery::StartMachine:
+		case ProcessQuery::StartMachineRom:
 			// machine
 			args << mMachineRomPair.first->infos().data( MachineInfos::Name );
 			args << "-rompath" << mSettings->stringValue( Settings::Bios );
@@ -107,17 +114,27 @@ bool ProcessQuery::startNextTask()
 				args << "-cheat";
 			}
 			
-			// device
-			foreach ( const iDevice& device, mMachineRomPair.first->infos().devices() )
+			// states
+			if ( mSettings->boolValue( Settings::AutoSave ) )
 			{
-				const QStringList filters = device.extensions().replaceInStrings( QRegExp( "^(.*)$" ), "*.\\1" );
-				
-				if ( QDir::match( filters, mMachineRomPair.second ) )
+				args << "-autosave";
+			}
+			
+			// device
+			if ( mCurrentTask == ProcessQuery::StartMachineRom )
+			{
+				foreach ( const iDevice& device, mMachineRomPair.first->infos().devices() )
 				{
-					const QString deviceTag = device.data( iDevice::Tag );
+					const QStringList filters = device.extensions().replaceInStrings( QRegExp( "^(.*)$" ), "*.\\1" );
 					
-					args << QString( "-%1" ).arg( deviceTag );
-					args << mMachineRomPair.second;
+					if ( QDir::match( filters, mMachineRomPair.second ) )
+					{
+						const QString briefName = device.data( iDevice::BriefName );
+						
+						args << QString( "-%1" ).arg( briefName );
+						args << mMachineRomPair.second;
+						break;
+					}
 				}
 			}
 			
@@ -125,7 +142,14 @@ bool ProcessQuery::startNextTask()
 		case ProcessQuery::ListXml:
 			args << "-listxml";
 			break;
+		case ProcessQuery::VerifyRoms:
+			args << "-verifyroms";
+			break;
 		case ProcessQuery::IDLE:
+			return false;
+			break;
+		default:
+			Q_ASSERT( 0 );
 			return false;
 			break;
 	}
@@ -167,18 +191,27 @@ void ProcessQuery::handleNormalExit()
 {
 	switch ( mCurrentTask )
 	{
-		case ProcessQuery::StartRom:
+		case ProcessQuery::StartMachine:
+			break;
+		case ProcessQuery::StartMachineRom:
 			break;
 		case ProcessQuery::ListXml:
 		{
 			QDomDocument document;
-			QByteArray datas = readAll();
+			const QByteArray datas = readAll();
 			QString errorMsg;
 			int errorLine;
 			int errorColumn;
 			bool ok = document.setContent( datas, &errorMsg, &errorLine, &errorColumn );
 			
 			emit listXmlFinished( document, !ok, errorMsg, QPoint( errorColumn, errorLine ) );
+			break;
+		}
+		case ProcessQuery::VerifyRoms:
+		{
+			const QString datas = QString::fromLocal8Bit( readAll() );
+			
+			emit verifyRomsFinished( datas );
 			break;
 		}
 		case ProcessQuery::IDLE:
@@ -210,4 +243,9 @@ void ProcessQuery::_q_finished( int exitCode, QProcess::ExitStatus exitStatus )
 void ProcessQuery::listXml()
 {
 	addTask( ProcessQuery::ListXml );
+}
+
+void ProcessQuery::verifyRoms()
+{
+	addTask( ProcessQuery::VerifyRoms );
 }

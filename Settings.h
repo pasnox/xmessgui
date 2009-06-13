@@ -29,7 +29,8 @@ public:
 		WaitVBLANK,
 		SkipGameInformations,
 		SkipWarnings,
-		Cheat
+		Cheat,
+		AutoSave
 	};
 	
 	Settings();
@@ -72,6 +73,7 @@ protected:
 	bool mSkipGameInformations;
 	bool mSkipWarnings;
 	bool mCheat;
+	bool mAutoSave;
 };
 
 #endif // SETTINGS_H
