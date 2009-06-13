@@ -27,13 +27,13 @@ protected:
 	ProcessQuery* mProcessQuery;
 	MachineModel* mMachineModel;
 	MachineFilterModel* mMachineFilterModel;
-	RomModel* mRomsModel;
+	RomModel* mRomModel;
 	RomFilterModel* mRomFilterModel;
 
 protected slots:
 	void reloadSettings();
-	void machineModel_ready();
-	void romsModel_ready();
+	void machineFilterModel_ready();
+	void romFilterModel_ready();
 	void on_aSettings_triggered();
 	void on_aQuit_triggered();
 	void on_tvMachines_activated( const QModelIndex& index );

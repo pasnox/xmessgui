@@ -2,6 +2,9 @@
 #include "Settings.h"
 #include "MachineItem.h"
 
+#include <QDir>
+#include <QDebug>
+
 ProcessQuery::ProcessQuery( Settings* settings, QObject* parent )
 	: QProcess( parent )
 {
@@ -39,10 +42,9 @@ bool ProcessQuery::startNextTask()
 	switch ( mCurrentTask )
 	{
 		case ProcessQuery::StartRom:
-			args << mMachineRomPair.first->infos().data( MachineInfos::Name )
-				<< "-skip_gameinfo"
-				<< "-skip_warnings"
-				<< "-cheat";
+			// machine
+			args << mMachineRomPair.first->infos().data( MachineInfos::Name );
+			args << "-rompath" << mSettings->stringValue( Settings::Bios );
 			
 			// performance
 			if ( mSettings->boolValue( Settings::Multithreading ) )
@@ -89,8 +91,35 @@ bool ProcessQuery::startNextTask()
 				args << "-waitvsync";
 			}
 			
-			// others
-			args << "-rompath" << mSettings->stringValue( Settings::Bios ) << "-cart" << mMachineRomPair.second;
+			// misc
+			if ( mSettings->boolValue( Settings::SkipGameInformations ) )
+			{
+				args << "-skip_gameinfo";
+			}
+			
+			if ( mSettings->boolValue( Settings::SkipWarnings ) )
+			{
+				args << "-skip_warnings";
+			}
+			
+			if ( mSettings->boolValue( Settings::Cheat ) )
+			{
+				args << "-cheat";
+			}
+			
+			// device
+			foreach ( const iDevice& device, mMachineRomPair.first->infos().devices() )
+			{
+				const QStringList filters = device.extensions().replaceInStrings( QRegExp( "^(.*)$" ), "*.\\1" );
+				
+				if ( QDir::match( filters, mMachineRomPair.second ) )
+				{
+					const QString deviceTag = device.data( iDevice::Tag );
+					
+					args << QString( "-%1" ).arg( deviceTag );
+					args << mMachineRomPair.second;
+				}
+			}
 			
 			break;
 		case ProcessQuery::ListXml:

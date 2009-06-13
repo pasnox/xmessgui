@@ -11,8 +11,16 @@ RomFilterModel::RomFilterModel( RomModel* parent )
 	
 	mModel = parent;
 	setSourceModel( parent );
+	
+	connect( mModel, SIGNAL( ready() ), this, SLOT( romModel_ready() ) );
 }
 
 RomFilterModel::~RomFilterModel()
 {
+}
+
+void RomFilterModel::romModel_ready()
+{
+	sort( 1, Qt::AscendingOrder );
+	emit ready();
 }

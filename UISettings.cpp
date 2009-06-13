@@ -57,6 +57,11 @@ void UISettings::initSettings()
 	cbKeepAspectRatio->setChecked( mSettings->boolValue( Settings::KeepAspectRatio ) );
 	cbAllowDoubleStretchFactors->setChecked( mSettings->boolValue( Settings::AllowDoubleStretchFactors ) );
 	cbWaitVBLANK->setChecked( mSettings->boolValue( Settings::WaitVBLANK ) );
+	
+	// misc
+	cbSkipGameInformations->setChecked( mSettings->boolValue( Settings::SkipGameInformations ) );
+	cbSkipWarnings->setChecked( mSettings->boolValue( Settings::SkipWarnings ) );
+	cbCheat->setChecked( mSettings->boolValue( Settings::Cheat ) );
 }
 
 void UISettings::restoreDefaults()
@@ -78,6 +83,14 @@ void UISettings::restoreDefaults()
 	cbScaleMode->setCurrentIndex( cbScaleMode->findText( "none" ) );
 	cbFullScreen->setChecked( false );
 	cbMaximize->setChecked( false );
+	cbKeepAspectRatio->setChecked( false );
+	cbAllowDoubleStretchFactors->setChecked( false );
+	cbWaitVBLANK->setChecked( false );
+	
+	// misc
+	cbSkipGameInformations->setChecked( false );
+	cbSkipWarnings->setChecked( false );
+	cbCheat->setChecked( false );
 }
 
 QString UISettings::getOpenFileName( const QString& text, const QString& fileName, const QString& filter )
@@ -166,10 +179,14 @@ void UISettings::accept()
 	mSettings->setStringValue( Settings::ScaleMode, cbScaleMode->currentText() );
 	mSettings->setBoolValue( Settings::FullScreen, cbFullScreen->isChecked() );
 	mSettings->setBoolValue( Settings::Maximize, cbMaximize->isChecked() );
-	
 	mSettings->setBoolValue( Settings::KeepAspectRatio, cbKeepAspectRatio->isChecked() );
 	mSettings->setBoolValue( Settings::AllowDoubleStretchFactors, cbAllowDoubleStretchFactors->isChecked() );
 	mSettings->setBoolValue( Settings::WaitVBLANK, cbWaitVBLANK->isChecked() );
+	
+	// misc
+	mSettings->setBoolValue( Settings::SkipGameInformations, cbSkipGameInformations->isChecked() );
+	mSettings->setBoolValue( Settings::SkipWarnings, cbSkipWarnings->isChecked() );
+	mSettings->setBoolValue( Settings::Cheat, cbCheat->isChecked() );
 	
 	mSettings->save();
 	

@@ -15,6 +15,12 @@ public:
 	
 protected:
 	RomModel* mModel;
+
+protected slots:
+	void romModel_ready();
+
+signals:
+	void ready();
 };
 
 #endif // ROMFILTERMODEL_H

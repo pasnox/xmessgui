@@ -46,4 +46,5 @@ bool MachineFilterModel::filterAcceptsRow( int source_row, const QModelIndex& so
 void MachineFilterModel::machineModel_ready()
 {
 	sort( 0, Qt::AscendingOrder );
+	emit ready();
 }

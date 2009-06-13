@@ -51,6 +51,13 @@ bool Settings::load()
 	mWaitVBLANK = settings.value( "WaitVBLANK", false ).toBool();
 	settings.endGroup();
 	
+	// misc
+	settings.beginGroup( "Misc" );
+	mSkipGameInformations = settings.value( "SkipGameInformations", false ).toBool();
+	mSkipWarnings = settings.value( "SkipWarnings", false ).toBool();
+	mCheat = settings.value( "Cheat", false ).toBool();
+	settings.endGroup();
+	
 	return true;
 }
 
@@ -86,10 +93,16 @@ bool Settings::save()
 	settings.setValue( "ScaleMode", mScaleMode );
 	settings.setValue( "FullScreen", mFullScreen );
 	settings.setValue( "Maximize", mMaximize );
-	
 	settings.setValue( "KeepAspectRatio", mKeepAspectRatio );
 	settings.setValue( "AllowDoubleStretchFactors", mAllowDoubleStretchFactors );
 	settings.setValue( "WaitVBLANK", mWaitVBLANK );
+	settings.endGroup();
+	
+	// misc
+	settings.beginGroup( "Misc" );
+	settings.setValue( "SkipGameInformations", mSkipGameInformations );
+	settings.setValue( "SkipWarnings", mSkipWarnings );
+	settings.setValue( "Cheat", mCheat );
 	settings.endGroup();
 	
 	return settings.isWritable();
@@ -217,6 +230,15 @@ bool Settings::boolValue( Settings::BoolType type ) const
 		case Settings::WaitVBLANK:
 			return mWaitVBLANK;
 			break;
+		case Settings::SkipGameInformations:
+			return mSkipGameInformations;
+			break;
+		case Settings::SkipWarnings:
+			return mSkipWarnings;
+			break;
+		case Settings::Cheat:
+			return mCheat;
+			break;
 	}
 	
 	Q_ASSERT( 0 );
@@ -247,6 +269,15 @@ void Settings::setBoolValue( Settings::BoolType type, bool value )
 			break;
 		case Settings::WaitVBLANK:
 			mWaitVBLANK = value;
+			break;
+		case Settings::SkipGameInformations:
+			mSkipGameInformations = value;
+			break;
+		case Settings::SkipWarnings:
+			mSkipWarnings = value;
+			break;
+		case Settings::Cheat:
+			mCheat = value;
 			break;
 		default:
 			Q_ASSERT( 0 );
