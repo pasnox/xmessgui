@@ -31,6 +31,13 @@ class MachineModel : public QAbstractItemModel
 	Q_OBJECT
 	
 public:
+	enum State
+	{
+		Working,
+		Imperfect,
+		NotWorking
+	};
+	
 	MachineModel( QObject* parent = 0 );
 	virtual ~MachineModel();
 	
@@ -53,11 +60,15 @@ public:
 	void setIconsPath( const QString& path );
 	QString iconsPath() const;
 	
+	QIcon icon( MachineModel::State state ) const;
 	MachinesCount count( MachineItem* parent = 0 ) const;
 	
 protected:
 	QString mIconsPath;
 	QDomDocument mDocument;
+	QIcon* mIconWorking;
+	QIcon* mIconImperfect;
+	QIcon* mIconNotWorking;
 	QMap<QString, MachineItem*> mMachineItems;
 	
 	void createItems();

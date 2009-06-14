@@ -6,6 +6,7 @@ int main( int argc, char** argv )
 {
 	// create application
 	QApplication app( argc, argv );
+	app.setQuitOnLastWindowClosed( false );
 
 	// init application
 	app.setOrganizationDomain( "xmessgui.sf.net" );
@@ -14,9 +15,6 @@ int main( int argc, char** argv )
 
 	UIMain w;
 	w.showMaximized();
-
-	// connection
-	QObject::connect( &app, SIGNAL( lastWindowClosed() ), &app, SLOT( quit() ) );
 
 	// start application
 	return app.exec();

@@ -17,7 +17,7 @@ SearchEdit::SearchEdit( QWidget* parent, const QString& promptText )
 	mTimer->setSingleShot( true );
 	
 	mOptionsButton = new QToolButton( this );
-	mOptionsButton->setIcon( QIcon( ":/icons/find-options-16.png" ) );
+	mOptionsButton->setIcon( QIcon( ":/icons/search.png" ) );
 	mOptionsButton->setToolTip( tr( "Search Options" ) );
 	mOptionsButton->setStyleSheet( "QToolButton { border: none; padding: 0px; } QToolButton::menu-indicator { right: -2px; bottom: -2px; }" );
 	mOptionsButton->setCursor( Qt::ArrowCursor );
@@ -25,7 +25,7 @@ SearchEdit::SearchEdit( QWidget* parent, const QString& promptText )
 	mOptionsButton->setPopupMode( QToolButton::InstantPopup );
 
 	mClearButton = new QToolButton( this );
-	mClearButton->setIcon( QIcon( ":/icons/find-clear-16.png" )  );
+	mClearButton->setIcon( QIcon( ":/icons/clear.png" )  );
 	mClearButton->setToolTip( tr( "Clear" ) );
 	mClearButton->setStyleSheet( "QToolButton { border: none; padding: 0px; }" );
 	mClearButton->setCursor( Qt::ArrowCursor );

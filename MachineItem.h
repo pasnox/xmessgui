@@ -2,6 +2,7 @@
 #define MACHINEITEM_H
 
 #include <QDomElement>
+#include <QIcon>
 #include <QPixmap>
 #include <QBrush>
 #include <QList>
@@ -32,8 +33,8 @@ public:
 	int row() const;
 	
 	QString text() const;
-	QPixmap icon() const;
-	QBrush background() const;
+	QIcon icon() const;
+	QPixmap pixmap() const;
 	
 	const MachineInfos& infos() const;
 	

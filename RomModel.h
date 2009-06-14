@@ -31,6 +31,7 @@ public slots:
 
 protected:
 	RomModelThread* mThread;
+	QIcon* mIcon;
 	QFileInfoList mFiles;
 
 protected slots:
