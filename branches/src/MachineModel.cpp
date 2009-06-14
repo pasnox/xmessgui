@@ -7,10 +7,23 @@
 MachineModel::MachineModel( QObject* parent )
 	: QAbstractItemModel( parent )
 {
+	const int lighter = 180;
+	QPixmap pixWorking( QSize( 16, 16 ) );
+	pixWorking.fill( QColor( Qt::green ).lighter( lighter ) );
+	QPixmap pixImperfect( QSize( 16, 16 ) );
+	pixImperfect.fill( QColor( Qt::blue ).lighter( lighter ) );
+	QPixmap pixNotWorking( QSize( 16, 16 ) );
+	pixNotWorking.fill( QColor( Qt::red ).lighter( lighter ) );
+	mIconWorking = new QIcon( pixWorking );
+	mIconImperfect = new QIcon( pixImperfect );
+	mIconNotWorking = new QIcon( pixNotWorking );
 }
 
 MachineModel::~MachineModel()
 {
+	delete mIconWorking;
+	delete mIconImperfect;
+	delete mIconNotWorking;
 }
 
 int MachineModel::columnCount( const QModelIndex& parent ) const
@@ -38,9 +51,6 @@ QVariant MachineModel::data( const QModelIndex& index, int role ) const
 			break;
 		case Qt::ToolTipRole:
 			return QString( "%1 - %2" ).arg( item->infos().data( MachineInfos::Manufacturer ) ).arg( item->text() );
-			break;
-		case Qt::BackgroundRole:
-			return item->background();
 			break;
 		case Qt::SizeHintRole:
 			return QSize( 0, 18 );
@@ -272,6 +282,24 @@ void MachineModel::clear( const QDomDocument& document )
 	arrangeItems();
 	reset();
 	emit ready();
+}
+
+QIcon MachineModel::icon( MachineModel::State state ) const
+{
+	switch ( state )
+	{
+		case MachineModel::Working:
+			return *mIconWorking;
+			break;
+		case MachineModel::Imperfect:
+			return *mIconImperfect;
+			break;
+		case MachineModel::NotWorking:
+			return *mIconNotWorking;
+			break;
+	}
+	
+	return QIcon();
 }
 
 MachinesCount MachineModel::count( MachineItem* parent ) const

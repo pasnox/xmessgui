@@ -29,6 +29,8 @@ protected:
 	MachineFilterModel* mMachineFilterModel;
 	RomModel* mRomModel;
 	RomFilterModel* mRomFilterModel;
+	
+	void closeEvent( QCloseEvent* event );
 
 protected slots:
 	void reloadSettings();
@@ -39,9 +41,11 @@ protected slots:
 	void on_aQuit_triggered();
 	void on_aStartMachine_triggered();
 	void on_aStartMachineRom_triggered();
+	void on_aAbout_triggered();
 	void on_tvMachines_activated( const QModelIndex& index );
 	void on_seRomsFilter_searchChanged( const QString& text );
 	void on_tvRoms_activated( const QModelIndex& index );
+	void on_processQuery_started( ProcessQuery::Task task );
 	void on_processQuery_error( ProcessQuery::Task task, QProcess::ProcessError error );
 	void on_processQuery_finished( int exitCode, QProcess::ExitStatus exitStatus );
 	void on_processQuery_listXmlFinished( const QDomDocument& document, bool error, const QString& errorMsg, const QPoint& errorPosition );

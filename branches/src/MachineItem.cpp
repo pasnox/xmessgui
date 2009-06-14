@@ -75,39 +75,37 @@ QString MachineItem::text() const
 	return mInfos.data( MachineInfos::Description );
 }
 
-QPixmap MachineItem::icon() const
+QIcon MachineItem::icon() const
+{
+	const QString status = mInfos.driver().data( iDriver::Status );
+	
+	if ( status == "preliminary" )
+	{
+		return mModel->icon( MachineModel::NotWorking );
+	}
+	else if ( status == "imperfect" )
+	{
+		return mModel->icon( MachineModel::Imperfect );
+	}
+	else if ( status == "good" )
+	{
+		return mModel->icon( MachineModel::Working );
+	}
+	
+	return QIcon();
+}
+
+QPixmap MachineItem::pixmap() const
 {
 	const QString name = mInfos.data( MachineInfos::Name );
 	QPixmap pixmap = QPixmap( mModel->iconsPath().append( QString( "/%1/%1.png" ).arg( name ) ) );
 	
 	if ( pixmap.isNull() && parent() )
 	{
-		pixmap = parent()->icon();
+		pixmap = parent()->pixmap();
 	}
 	
 	return pixmap;
-}
-
-QBrush MachineItem::background() const
-{
-	const QString status = mInfos.driver().data( iDriver::Status );
-	const int lighter = 180;
-	QBrush brush;
-	
-	if ( status == "preliminary" )
-	{
-		brush = QColor( Qt::red ).lighter( lighter );
-	}
-	else if ( status == "imperfect" )
-	{
-		brush = QColor( Qt::blue ).lighter( lighter );
-	}
-	else if ( status == "good" )
-	{
-		brush = QColor( Qt::green ).lighter( lighter );
-	}
-	
-	return brush;
 }
 
 const MachineInfos& MachineItem::infos() const

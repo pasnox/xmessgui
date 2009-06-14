@@ -47,11 +47,13 @@ protected:
 	void handleNormalExit();
 	
 protected slots:
+	void _q_started();
 	void _q_error( QProcess::ProcessError error );
 	void _q_finished( int exitCode, QProcess::ExitStatus exitStatus );
 
 signals:
 	void log( const QString& message );
+	void started( ProcessQuery::Task task );
 	void error( ProcessQuery::Task task, QProcess::ProcessError error );
 	void listXmlFinished( const QDomDocument& document, bool error, const QString& errorMsg, const QPoint& errorPosition );
 	void verifyRomsFinished( const QString& buffer );

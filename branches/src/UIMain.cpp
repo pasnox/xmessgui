@@ -27,6 +27,7 @@ UIMain::UIMain( QWidget* parent )
 	mMachineModel->setIconsPath( qApp->applicationDirPath().append( "/src/resources/machines" ) );
 	
 	setupUi( this );
+	dwLog->setVisible( false );
 	
 	seMachinesFilter->setPromptText( tr( "Machines filter..." ) );
 	seRomsFilter->setPromptText( tr( "Roms filter..." ) );
@@ -59,6 +60,12 @@ UIMain::~UIMain()
 	mSettings->setStringValue( Settings::RomsFilter, seRomsFilter->text() );
 	
 	delete mSettings;
+}
+
+void UIMain::closeEvent( QCloseEvent* event )
+{
+	qApp->setQuitOnLastWindowClosed( true );
+	QMainWindow::closeEvent( event );
 }
 
 void UIMain::appendLog( const QString& message )
@@ -123,11 +130,6 @@ void UIMain::on_aStartMachine_triggered()
 	
 	if ( machineItem )
 	{
-		if ( isVisible() )
-		{
-			setVisible( false );
-		}
-		
 		mProcessQuery->startMachine( machineItem );
 	}
 }
@@ -141,13 +143,20 @@ void UIMain::on_aStartMachineRom_triggered()
 	
 	if ( machineItem )
 	{
-		if ( isVisible() )
-		{
-			setVisible( false );
-		}
-		
 		mProcessQuery->startMachineRom( machineItem, mRomModel->filePath( index ) );
 	}
+}
+
+void UIMain::on_aAbout_triggered()
+{
+	QMessageBox* msg = new QMessageBox( window() );
+	msg->setAttribute( Qt::WA_DeleteOnClose );
+	msg->setTextFormat( Qt::RichText );
+	msg->setIconPixmap( QPixmap( ":/icons/mess.png" ) );
+	msg->setText( tr( "<center>xMess Gui - v1.00 <br /> A simple & powerfull (sdl)mess Gui.</center>" ) );
+	msg->setInformativeText( "<center><a href=\"http://xmessgui.googlecode.com\">http://xmessgui.googlecode.com</a></center>" );
+	msg->setDetailedText( tr( "Authors:\n\nAZEVEDO Filipe aka Nox P@sNox - pasnox@gmail.com" ) );
+	msg->open();
 }
 
 void UIMain::on_tvMachines_activated( const QModelIndex& proxyIndex )
@@ -178,7 +187,7 @@ void UIMain::on_tvMachines_activated( const QModelIndex& proxyIndex )
 		}
 	}
 	
-	lMachineIcon->setPixmap( machine->icon() );
+	lMachineIcon->setPixmap( machine->pixmap() );
 	lMachineIcon->setVisible( !lMachineIcon->pixmap()->isNull() );
 	teMachineInfos->setHtml( machine->infos().toHtml() );
 	mRomModel->refresh( machine, mSettings, seRomsFilter->text() );
@@ -201,6 +210,19 @@ void UIMain::on_tvRoms_activated( const QModelIndex& proxyIndex )
 	aStartMachineRom->trigger();
 }
 
+void UIMain::on_processQuery_started( ProcessQuery::Task task )
+{
+	switch ( task )
+	{
+		case ProcessQuery::StartMachine:
+		case ProcessQuery::StartMachineRom:
+			setVisible( false );
+			break;
+		default:
+			break;
+	}
+}
+
 void UIMain::on_processQuery_error( ProcessQuery::Task task, QProcess::ProcessError error )
 {
 	const QString message = tr( "*** Error %1 on task %2" ).arg( error ).arg( task );
@@ -211,11 +233,7 @@ void UIMain::on_processQuery_finished( int exitCode, QProcess::ExitStatus exitSt
 {
 	const QString message = tr( "*** Finished with exitCode %1 and exitStatus %2" ).arg( exitCode ).arg( exitStatus );
 	appendLog( message );
-	
-	if ( !isVisible() )
-	{
-		setVisible( true );
-	}
+	setVisible( true );
 }
 
 void UIMain::on_processQuery_listXmlFinished( const QDomDocument& document, bool error, const QString& errorMsg, const QPoint& errorPosition )

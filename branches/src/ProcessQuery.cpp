@@ -3,6 +3,8 @@
 #include "MachineItem.h"
 
 #include <QDir>
+#include <QApplication>
+#include <QInputDialog>
 #include <QDebug>
 
 ProcessQuery::ProcessQuery( Settings* settings, QObject* parent )
@@ -15,6 +17,7 @@ ProcessQuery::ProcessQuery( Settings* settings, QObject* parent )
 	setReadChannelMode( QProcess::MergedChannels );
 	mCurrentTask = ProcessQuery::IDLE;
 	
+	connect( this, SIGNAL( started() ), this, SLOT( _q_started() ) );
 	connect( this, SIGNAL( error( QProcess::ProcessError ) ), this, SLOT( _q_error( QProcess::ProcessError ) ) );
 	connect( this, SIGNAL( finished( int, QProcess::ExitStatus ) ), this, SLOT( _q_finished( int, QProcess::ExitStatus ) ) );
 }
@@ -123,17 +126,38 @@ bool ProcessQuery::startNextTask()
 			// device
 			if ( mCurrentTask == ProcessQuery::StartMachineRom )
 			{
+				bool found = false;
+				QStringList instances;
+				
 				foreach ( const iDevice& device, mMachineRomPair.first->infos().devices() )
 				{
 					const QStringList filters = device.extensions().replaceInStrings( QRegExp( "^(.*)$" ), "*.\\1" );
+					const QString instance = device.data( iDevice::Name );
+					instances << instance;
 					
 					if ( QDir::match( filters, mMachineRomPair.second ) )
 					{
-						const QString briefName = device.data( iDevice::BriefName );
-						
-						args << QString( "-%1" ).arg( briefName );
+						found = true;
+						args << QString( "-%1" ).arg( instance );
 						args << mMachineRomPair.second;
 						break;
+					}
+				}
+				
+				if ( !found )
+				{
+					bool ok;
+					const QString instance = QInputDialog::getItem( qApp->activeWindow(), tr( "Devices..." ), tr( "Choose the device to use:" ), instances, 0, true, &ok );
+					
+					if ( ok && !instance.isEmpty() )
+					{
+						args << QString( "-%1" ).arg( instance );
+						args << mMachineRomPair.second;
+					}
+					else
+					{
+						emit log( tr( "Default device not found, user does not choose a proposed device: start aborted." ) );
+						return false;
 					}
 				}
 			}
@@ -219,6 +243,11 @@ void ProcessQuery::handleNormalExit()
 	}
 }
 
+void ProcessQuery::_q_started()
+{
+	emit started( mCurrentTask );
+}
+
 void ProcessQuery::_q_error( QProcess::ProcessError err )
 {
 	emit error( mCurrentTask, err );
@@ -235,6 +264,13 @@ void ProcessQuery::_q_finished( int exitCode, QProcess::ExitStatus exitStatus )
 			break;
 		case QProcess::CrashExit:
 			break;
+	}
+	
+	QString buffer = QString::fromLocal8Bit( readAll() );
+	
+	if ( !buffer.isEmpty() )
+	{
+		emit log( buffer );
 	}
 	
 	startNextTask();

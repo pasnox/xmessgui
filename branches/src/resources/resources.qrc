@@ -1,6 +1,15 @@
 <RCC>
   <qresource prefix="/icons" >
-    <file alias="find-clear-16.png" >icons/find-clear-16.png</file>
-    <file alias="find-options-16.png" >icons/find-options-16.png</file>
+    <file alias="favorites.png" >icons/favorites.png</file>
+    <file alias="mess.png" >icons/mess.png</file>
+    <file alias="rom.png" >icons/rom.png</file>
+    <file alias="toggle_fullscreen.png" >icons/toggle_fullscreen.png</file>
+    <file alias="clear.png" >icons/clear.png</file>
+    <file alias="search.png" >icons/search.png</file>
+    <file alias="update.png" >icons/update.png</file>
+    <file alias="quit.png" >icons/quit.png</file>
+    <file alias="goto.png" >icons/goto.png</file>
+    <file alias="next.png" >icons/next.png</file>
+    <file alias="settings.png" >icons/settings.png</file>
   </qresource>
 </RCC>

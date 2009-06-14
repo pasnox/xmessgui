@@ -180,12 +180,14 @@ RomModel::RomModel( QObject* parent )
 	: QAbstractItemModel( parent )
 {
 	mThread = new RomModelThread( this );
+	mIcon = new QIcon( ":/icons/rom.png" );
 	
 	connect( mThread, SIGNAL( queryFinished( const QFileInfoList& ) ), this, SLOT( queryFinished( const QFileInfoList& ) ) );
 }
 
 RomModel::~RomModel()
 {
+	delete mIcon;
 }
 
 int RomModel::columnCount( const QModelIndex& parent ) const
@@ -243,11 +245,15 @@ QVariant RomModel::data( const QModelIndex& index, int role ) const
 			if ( role == Qt::DecorationRole )
 			{
 				QString fn;// = QString( "%1/.mess/snap/gamegeaj/%2.png" ).arg( QDir::homePath() ).arg( "0000" );
-				return QIcon( fn );
+				return QPixmap( fn );
 			}
 			break;
 		case 1:
-			if ( role == Qt::DisplayRole )
+			if ( role == Qt::DecorationRole )
+			{
+				return *mIcon;
+			}
+			else if ( role == Qt::DisplayRole )
 			{
 				return mFiles.at( row ).completeBaseName();
 			}
