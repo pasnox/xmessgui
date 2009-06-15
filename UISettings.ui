@@ -45,7 +45,7 @@
        <string>General</string>
       </property>
       <property name="icon">
-       <iconset resource="resources/resources.qrc">
+       <iconset>
         <normaloff>:/icons/find-options-16.png</normaloff>:/icons/find-options-16.png</iconset>
       </property>
      </item>
@@ -54,7 +54,7 @@
        <string>Roms</string>
       </property>
       <property name="icon">
-       <iconset resource="resources/resources.qrc">
+       <iconset>
         <normaloff>:/icons/find-clear-16.png</normaloff>:/icons/find-clear-16.png</iconset>
       </property>
      </item>
@@ -178,7 +178,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="wGeneral">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -271,6 +271,50 @@
         </layout>
        </item>
        <item>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <property name="topMargin">
+          <number>12</number>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <widget class="QLabel" name="lResourcesPath">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Resources path</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="Line" name="fResourcesPath">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLineEdit" name="leResourcesPath">
+           <property name="toolTip">
+            <string>Enter the 'sdlmess' binary filepath/filename</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QToolButton" name="tbResourcesPath">
+           <property name="toolTip">
+            <string>Locate 'sdlmess' binary file</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -342,7 +386,7 @@
             <string>Validate the current roms path</string>
            </property>
            <property name="icon">
-            <iconset resource="resources/resources.qrc">
+            <iconset>
              <normaloff>:/icons/find-options-16.png</normaloff>:/icons/find-options-16.png</iconset>
            </property>
           </widget>

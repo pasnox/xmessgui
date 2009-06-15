@@ -21,6 +21,6 @@ RomFilterModel::~RomFilterModel()
 
 void RomFilterModel::romModel_ready()
 {
-	sort( 1, Qt::AscendingOrder );
+	sort( 0, Qt::AscendingOrder );
 	emit ready();
 }

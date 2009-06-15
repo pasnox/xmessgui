@@ -38,6 +38,7 @@ void UISettings::initSettings()
 	// general
 	leBinaryFile->setText( mSettings->stringValue( Settings::Binary ) );
 	leBiosPath->setText( mSettings->stringValue( Settings::Bios ) );
+	leResourcesPath->setText( mSettings->stringValue( Settings::Resources ) );
 	
 	// roms
 	mRomsPaths = mSettings->romsPaths();
@@ -72,6 +73,7 @@ void UISettings::restoreDefaults()
 	// general
 	leBinaryFile->setText( "sdlmess" );
 	leBiosPath->setText( QString( "%1/.mess/bios" ).arg( QDir::homePath() ) );
+	leResourcesPath->setText( QString( "%1/.mess/resources" ).arg( QDir::homePath() ) );
 	
 	// roms
 	mRomsPaths.clear();
@@ -129,6 +131,16 @@ void UISettings::on_tbBiosPath_clicked()
 	}
 }
 
+void UISettings::on_tbResourcesPath_clicked()
+{
+	const QString path = getExistingDirectory( tr( "Select your resources path" ), leResourcesPath->text() );
+	
+	if ( !path.isEmpty() )
+	{
+		leResourcesPath->setText( path );
+	}
+}
+
 void UISettings::on_cbRomsPath_currentIndexChanged( int index )
 {
 	const QString name = cbRomsPath->itemData( index ).toString();
@@ -172,6 +184,7 @@ void UISettings::accept()
 	// general
 	mSettings->setStringValue( Settings::Binary, leBinaryFile->text() );
 	mSettings->setStringValue( Settings::Bios, leBiosPath->text() );
+	mSettings->setStringValue( Settings::Resources, leResourcesPath->text() );
 	
 	// roms
 	mSettings->setRomsPaths( mRomsPaths );

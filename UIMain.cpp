@@ -24,8 +24,6 @@ UIMain::UIMain( QWidget* parent )
 	mRomModel = new RomModel( this );
 	mRomFilterModel = new RomFilterModel( mRomModel );
 	
-	mMachineModel->setIconsPath( qApp->applicationDirPath().append( "/src/resources/machines" ) );
-	
 	setupUi( this );
 	dwLog->setVisible( false );
 	
@@ -33,10 +31,11 @@ UIMain::UIMain( QWidget* parent )
 	seRomsFilter->setPromptText( tr( "Roms filter..." ) );
 	tvMachines->setModel( mMachineFilterModel );
 	tvRoms->setModel( mRomFilterModel );
-	tvRoms->header()->QHeaderView::setResizeMode( 0, QHeaderView::ResizeToContents );
-	tvRoms->header()->QHeaderView::setResizeMode( 1, QHeaderView::Stretch );
-	tvRoms->header()->QHeaderView::setResizeMode( 2, QHeaderView::ResizeToContents );
-	tvRoms->header()->QHeaderView::setResizeMode( 3, QHeaderView::ResizeToContents );
+	tvRoms->header()->setResizeMode( 0, QHeaderView::Stretch );
+	tvRoms->header()->setResizeMode( 1, QHeaderView::ResizeToContents );
+	tvRoms->header()->setResizeMode( 2, QHeaderView::ResizeToContents );
+	tvRoms->header()->setResizeMode( 3, QHeaderView::ResizeToContents );
+	tvRoms->header()->setSortIndicator( 0, Qt::AscendingOrder );
 	
 	connect( mProcessQuery, SIGNAL( log( const QString& ) ), this, SLOT( appendLog( const QString& ) ) );
 	connect( mMachineFilterModel, SIGNAL( ready() ), this, SLOT( machineFilterModel_ready() ) );
@@ -75,6 +74,7 @@ void UIMain::appendLog( const QString& message )
 
 void UIMain::reloadSettings()
 {
+	mMachineModel->setIconsPath( mSettings->stringValue( Settings::Resources ) );
 	seMachinesFilter->setText( mSettings->stringValue( Settings::MachineFilter ) );
 	seRomsFilter->setText( mSettings->stringValue( Settings::RomsFilter) );
 	
