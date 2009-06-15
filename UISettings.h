@@ -5,18 +5,20 @@
 #include "MachineModel.h"
 
 class Settings;
+class MachineFilterModel;
 
 class UISettings : public QDialog, public Ui::UISettings
 {
-		Q_OBJECT
+	Q_OBJECT
 
 public:
-	UISettings( Settings* settings, const MachineItemList& machines, QWidget* parent = 0 );
+	UISettings( Settings* settings, MachineModel* machineModel, QWidget* parent = 0 );
 	virtual ~UISettings();
 	
 protected:
 	Settings* mSettings;
-	MachineItemList mMachines;
+	MachineModel* mMachineModel;
+	MachineFilterModel* mMachineFilterModel;
 	QMap<QString, QString> mRomsPaths;
 	
 	void initSettings();
@@ -29,7 +31,7 @@ protected slots:
 	void on_tbBinaryFile_clicked();
 	void on_tbBiosPath_clicked();
 	void on_tbResourcesPath_clicked();
-	void on_cbRomsPath_currentIndexChanged( int index );
+	void on_tvRomsPath_activated( const QModelIndex &index );
 	void on_tbRomsPathSet_clicked();
 	void on_tbRomsPath_clicked();
 	void on_cbVideoMode_currentIndexChanged( const QString& text );
