@@ -13,6 +13,7 @@ UISettings::UISettings( Settings* settings, MachineModel* machineModel, QWidget*
 	mSettings = settings;
 	mMachineModel = machineModel;
 	mMachineFilterModel = new MachineFilterModel( mMachineModel );
+	mMachineFilterModel->sort( 0, Qt::AscendingOrder );
 	
 	setupUi( this );
 	setAttribute( Qt::WA_DeleteOnClose );
