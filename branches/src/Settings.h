@@ -11,6 +11,7 @@ public:
 	{
 		Binary,
 		Bios,
+		Resources,
 		CurrentMachine,
 		MachineFilter,
 		RomsFilter,
@@ -55,6 +56,7 @@ public:
 protected:
 	QString mBinary;
 	QString mBios;
+	QString mResources;
 	QMap<QString, QString> mRomsPaths;
 	QString mCurrentMachine;
 	QString mMachineFilter;

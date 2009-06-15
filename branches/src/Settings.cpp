@@ -20,7 +20,8 @@ bool Settings::load()
 	
 	settings.beginGroup( qApp->applicationName() );
 	mBinary = settings.value( "Binary", "sdlmess" ).toString();
-	mBios = settings.value( "Bios", QString( "%1/.%2/bios" ).arg( QDir::homePath() ).arg( qApp->applicationName() ) ).toString();
+	mBios = settings.value( "Bios", QString( "%1/.mess/bios" ).arg( QDir::homePath() ) ).toString();
+	mResources = settings.value( "Resources", QString( "%1/.mess/resources" ).arg( QDir::homePath() ) ).toString();
 	mCurrentMachine = settings.value( "CurrentMachine" ).toString();
 	mMachineFilter = settings.value( "MachineFilter" ).toString();
 	mRomsFilter = settings.value( "RomsFilter" ).toString();
@@ -73,6 +74,7 @@ bool Settings::save()
 	settings.beginGroup( qApp->applicationName() );
 	settings.setValue( "Binary", mBinary );
 	settings.setValue( "Bios", mBios );
+	settings.setValue( "Resources", mResources );
 	settings.setValue( "CurrentMachine", mCurrentMachine );
 	settings.setValue( "MachineFilter", mMachineFilter );
 	settings.setValue( "RomsFilter", mRomsFilter );
@@ -162,6 +164,9 @@ QString Settings::stringValue( Settings::StringType type ) const
 		case Settings::Bios:
 			return mBios;
 			break;
+		case Settings::Resources:
+			return mResources;
+			break;
 		case Settings::CurrentMachine:
 			return mCurrentMachine;
 			break;
@@ -193,6 +198,9 @@ void Settings::setStringValue( Settings::StringType type, const QString& value )
 			break;
 		case Settings::Bios:
 			mBios = value;
+			break;
+		case Settings::Resources:
+			mResources = value;
 			break;
 		case Settings::CurrentMachine:
 			mCurrentMachine = value;

@@ -207,10 +207,10 @@ QVariant RomModel::headerData( int section, Qt::Orientation orientation, int rol
 				switch ( section )
 				{
 					case 0:
-						return tr( "Screenshot" );
+						return tr( "Name" );
 						break;
 					case 1:
-						return tr( "Name" );
+						return tr( "Screenshot" );
 						break;
 					case 2:
 						return tr( "Size" );
@@ -244,18 +244,18 @@ QVariant RomModel::data( const QModelIndex& index, int role ) const
 		case 0:
 			if ( role == Qt::DecorationRole )
 			{
-				QString fn;// = QString( "%1/.mess/snap/gamegeaj/%2.png" ).arg( QDir::homePath() ).arg( "0000" );
-				return QPixmap( fn );
-			}
-			break;
-		case 1:
-			if ( role == Qt::DecorationRole )
-			{
 				return *mIcon;
 			}
 			else if ( role == Qt::DisplayRole )
 			{
 				return mFiles.at( row ).completeBaseName();
+			}
+			break;
+		case 1:
+			if ( role == Qt::DecorationRole )
+			{
+				QString fn;// = QString( "%1/.mess/snap/gamegeaj/%2.png" ).arg( QDir::homePath() ).arg( "0000" );
+				return QPixmap( fn );
 			}
 			break;
 		case 2:
