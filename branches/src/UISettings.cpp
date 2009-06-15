@@ -1,23 +1,22 @@
 #include "UISettings.h"
 #include "Settings.h"
 #include "MachineItem.h"
+#include "MachineFilterModel.h"
 
 #include <QFileDialog>
 
-UISettings::UISettings( Settings* settings, const MachineItemList& machines, QWidget* parent )
+UISettings::UISettings( Settings* settings, MachineModel* machineModel, QWidget* parent )
 	: QDialog( parent )
 {
 	Q_ASSERT( settings );
+	Q_ASSERT( machineModel );
 	mSettings = settings;
-	mMachines = machines;
+	mMachineModel = machineModel;
+	mMachineFilterModel = new MachineFilterModel( mMachineModel );
 	
 	setupUi( this );
 	setAttribute( Qt::WA_DeleteOnClose );
-	
-	foreach ( MachineItem* item, mMachines )
-	{
-		cbRomsPath->addItem( item->text(), item->infos().data( MachineInfos::Name ) );
-	}
+	tvRomsPath->setModel( mMachineFilterModel );
 	
 	if ( mSettings->isInitialized() )
 	{
@@ -27,6 +26,10 @@ UISettings::UISettings( Settings* settings, const MachineItemList& machines, QWi
 	{
 		restoreDefaults();
 	}
+	
+	seMachineFilter->setPromptText( tr( "Machines filter..." ) );
+	
+	connect( seMachineFilter, SIGNAL( searchChanged( const QString& ) ), mMachineFilterModel, SLOT( setFilterWildcard( const QString& ) ) );
 }
 
 UISettings::~UISettings()
@@ -42,9 +45,16 @@ void UISettings::initSettings()
 	
 	// roms
 	mRomsPaths = mSettings->romsPaths();
-	const int index = cbRomsPath->currentIndex();
-	const QString name = cbRomsPath->itemData( index ).toString();
-	leRomsPath->setText( mRomsPaths.value( name ) );
+	const QModelIndex proxyIndex = tvRomsPath->currentIndex();
+	const QModelIndex index = mMachineFilterModel->mapToSource( proxyIndex );
+	MachineItem* machine = mMachineModel->itemFromIndex( index );
+	
+	if ( index.isValid() )
+	{
+		const QString name = machine->infos().data( MachineInfos::Name );
+		
+		leRomsPath->setText( mRomsPaths.value( name ) );
+	}
 	
 	// performance
 	cbMultithreading->setChecked( mSettings->boolValue( Settings::Multithreading ) );
@@ -141,28 +151,47 @@ void UISettings::on_tbResourcesPath_clicked()
 	}
 }
 
-void UISettings::on_cbRomsPath_currentIndexChanged( int index )
+void UISettings::on_tvRomsPath_activated( const QModelIndex &proxyIndex )
 {
-	const QString name = cbRomsPath->itemData( index ).toString();
-	leRomsPath->setText( mRomsPaths.value( name ) );
+	const QModelIndex index = mMachineFilterModel->mapToSource( proxyIndex );
+	MachineItem* machine = mMachineModel->itemFromIndex( index );
+	
+	if ( machine )
+	{
+		const QString name = machine->infos().data( MachineInfos::Name );
+		
+		leRomsPath->setText( mRomsPaths.value( name ) );
+	}
 }
 
 void UISettings::on_tbRomsPathSet_clicked()
 {
-	const int index = cbRomsPath->currentIndex();
-	const QString name = cbRomsPath->itemData( index ).toString();
-	mRomsPaths[ name ] = leRomsPath->text();
+	const QModelIndex proxyIndex = tvRomsPath->currentIndex();
+	const QModelIndex index = mMachineFilterModel->mapToSource( proxyIndex );
+	MachineItem* machine = mMachineModel->itemFromIndex( index );
+	
+	if ( machine )
+	{
+		const QString name = machine->infos().data( MachineInfos::Name );
+		mRomsPaths[ name ] = leRomsPath->text();
+	}
 }
 
 void UISettings::on_tbRomsPath_clicked()
 {
-	const int index = cbRomsPath->currentIndex();
-	const QString name = cbRomsPath->itemData( index ).toString();
-	const QString path = getExistingDirectory( tr( "Select a roms path for '%1'" ).arg( name ), leRomsPath->text() );
+	const QModelIndex proxyIndex = tvRomsPath->currentIndex();
+	const QModelIndex index = mMachineFilterModel->mapToSource( proxyIndex );
+	MachineItem* machine = mMachineModel->itemFromIndex( index );
 	
-	if ( !path.isEmpty() )
+	if ( machine )
 	{
-		leRomsPath->setText( path );
+		const QString name = machine->infos().data( MachineInfos::Name );
+		const QString path = getExistingDirectory( tr( "Select a roms path for '%1'" ).arg( name ), leRomsPath->text() );
+		
+		if ( !path.isEmpty() )
+		{
+			leRomsPath->setText( path );
+		}
 	}
 }
 

@@ -106,7 +106,7 @@ void UIMain::romFilterModel_ready()
 
 void UIMain::on_aSettings_triggered()
 {
-	UISettings* dlg = new UISettings( mSettings, mMachineModel->rootItems(), this );
+	UISettings* dlg = new UISettings( mSettings, mMachineModel, this );
 	connect( dlg, SIGNAL( accepted() ), this, SLOT( reloadSettings() ) );
 	dlg->open();
 }

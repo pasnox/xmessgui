@@ -1,5 +1,14 @@
 <RCC>
   <qresource prefix="/icons" >
+    <file alias="view-statistics.png" >icons/view-statistics.png</file>
+    <file alias="document-save.png" >icons/document-save.png</file>
+    <file alias="games-config-options.png" >icons/games-config-options.png</file>
+    <file alias="speaker.png" >icons/speaker.png</file>
+    <file alias="system-run.png" >icons/system-run.png</file>
+    <file alias="tool-animator.png" >icons/tool-animator.png</file>
+    <file alias="dialog-ok-apply.png" >icons/dialog-ok-apply.png</file>
+    <file alias="document-open-folder.png" >icons/document-open-folder.png</file>
+    <file alias="document-open.png" >icons/document-open.png</file>
     <file alias="favorites.png" >icons/favorites.png</file>
     <file alias="mess.png" >icons/mess.png</file>
     <file alias="rom.png" >icons/rom.png</file>
