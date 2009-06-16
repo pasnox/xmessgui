@@ -1,5 +1,21 @@
+/****************************************************************************
+**
+** 		Created using Monkey Studio v1.8.3.3
+** Authors   : AZEVEDO Filipe aka Nox P@sNox - pasnox@gmail.com
+** Project   : xMess Gui
+** FileName  : UIMain.cpp
+** Date      : 2009-06-16T18:56:53
+** License   : GPL v3
+** Comment   : Free, Fast & Powerfull (sdl)mess front end.
+** Home Page : http://xmessgui.googlecode.com
+**
+** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+**
+****************************************************************************/
 #include "UIMain.h"
 #include "UISettings.h"
+#include "UIAbout.h"
 #include "Settings.h"
 #include "MachineModel.h"
 #include "MachineItem.h"
@@ -149,14 +165,8 @@ void UIMain::on_aStartMachineRom_triggered()
 
 void UIMain::on_aAbout_triggered()
 {
-	QMessageBox* msg = new QMessageBox( window() );
-	msg->setAttribute( Qt::WA_DeleteOnClose );
-	msg->setTextFormat( Qt::RichText );
-	msg->setIconPixmap( QPixmap( ":/icons/mess.png" ) );
-	msg->setText( tr( "<center>xMess Gui - v1.00 <br /> A simple & powerfull (sdl)mess Gui.</center>" ) );
-	msg->setInformativeText( "<center><a href=\"http://xmessgui.googlecode.com\">http://xmessgui.googlecode.com</a></center>" );
-	msg->setDetailedText( tr( "Authors:\n\nAZEVEDO Filipe aka Nox P@sNox - pasnox@gmail.com" ) );
-	msg->open();
+	UIAbout* about = new UIAbout( window() );
+	about->open();
 }
 
 void UIMain::on_tvMachines_activated( const QModelIndex& proxyIndex )
