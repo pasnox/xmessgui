@@ -3,7 +3,7 @@
 ** 		Created using Monkey Studio v1.8.3.3
 ** Authors   : AZEVEDO Filipe aka Nox P@sNox - pasnox@gmail.com
 ** Project   : xMess Gui
-** FileName  : MachineFilterModel.h
+** FileName  : main.h
 ** Date      : 2009-06-16T18:56:53
 ** License   : GPL v3
 ** Comment   : Free, Fast & Powerfull (sdl)mess front end.
@@ -13,31 +13,17 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 ****************************************************************************/
-#ifndef MACHINEFILTERMODEL_H
-#define MACHINEFILTERMODEL_H
+#ifndef MAIN_H
+#define MAIN_H
 
-#include <QSortFilterProxyModel>
+#include <QObject>
 
-class MachineModel;
+#define PACKAGE_NAME "xMess Gui"
+#define PACKAGE_VERSION "0.5.0"
+#define PACKAGE_COMMENT QObject::tr( "Free, Fast, Simple & Powerfull (sdl)mess Gui" ).toLocal8Bit().constData()
+#define PACKAGE_LICENSE "GPL v3"
+#define PACKAGE_HOMEPAGE "http://xmessgui.googlecode.com"
+#define PACKAGE_AUTHORS "AZEVEDO Filipe aka Nox P@sNox - pasnox@gmail.com"
 
-class MachineFilterModel : public QSortFilterProxyModel
-{
-	Q_OBJECT
-	
-public:
-	MachineFilterModel( MachineModel* parent = 0 );
-	virtual ~MachineFilterModel();
-	
-protected:
-	MachineModel* mModel;
-	
-	virtual bool filterAcceptsRow( int source_row, const QModelIndex& source_parent ) const;
-	
-protected slots:
-	void machineModel_ready();
 
-signals:
-	void ready();
-};
-
-#endif // MACHINEFILTERMODEL_H
+#endif // MAIN_H

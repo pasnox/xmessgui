@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/icons" >
+    <file alias="made_with_mks.png" >icons/made_with_mks.png</file>
+    <file alias="gplv3-88x31.png" >icons/gplv3-88x31.png</file>
     <file alias="view-statistics.png" >icons/view-statistics.png</file>
     <file alias="document-save.png" >icons/document-save.png</file>
     <file alias="games-config-options.png" >icons/games-config-options.png</file>

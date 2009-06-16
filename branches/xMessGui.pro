@@ -60,10 +60,12 @@ SOURCES	= src/main.cpp \
 	src/SearchEdit.cpp \
 	src/Utils.cpp \
 	src/MachineInfos.cpp \
-	src/RomFilterModel.cpp
+	src/RomFilterModel.cpp \
+	src/UIAbout.cpp
 
 FORMS	= src/UIMain.ui \
-	src/UISettings.ui
+	src/UISettings.ui \
+	src/UIAbout.ui
 HEADERS	= src/UIMain.h \
 	src/ProcessQuery.h \
 	src/MachineModel.h \
@@ -75,7 +77,9 @@ HEADERS	= src/UIMain.h \
 	src/SearchEdit.h \
 	src/Utils.h \
 	src/MachineInfos.h \
-	src/RomFilterModel.h
+	src/RomFilterModel.h \
+	src/main.h \
+	src/UIAbout.h
 QT	= core gui xml
 INCLUDEPATH	= . \
 	src
