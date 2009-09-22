@@ -91,6 +91,9 @@ public:
 public slots:
 	void getRoms( const MachineItem* machine, const Settings* settings, const QString& searchWildcard )
 	{
+		Q_ASSERT( machine );
+		Q_ASSERT( settings );
+		
 		{
 			QMutexLocker locker( &mMutex );
 			mStop = false;
@@ -331,7 +334,11 @@ void RomModel::refresh( const MachineItem* machine, const Settings* settings, co
 {
 	mFiles.clear();
 	reset();
-	mThread->getRoms( machine, settings, searchWildcard );
+	
+	if ( machine )
+	{
+		mThread->getRoms( machine, settings, searchWildcard );
+	}
 }
 
 void RomModel::queryFinished( const QFileInfoList& files )
