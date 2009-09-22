@@ -201,7 +201,15 @@ void UIMain::on_tvMachines_activated( const QModelIndex& proxyIndex )
 	lMachineIcon->setVisible( !lMachineIcon->pixmap()->isNull() );
 	teMachineInfos->setHtml( machine->infos().toHtml() );
 	mRomModel->refresh( machine, mSettings, seRomsFilter->text() );
-	lTotalRoms->setText( tr( "Listing roms..." ) );
+	
+	if ( machine )
+	{
+		lTotalRoms->setText( tr( "Listing roms..." ) );
+	}
+	else
+	{
+		lTotalRoms->setText( tr( "Listing roms cancelled, no machine." ) );
+	}
 }
 
 void UIMain::on_seRomsFilter_searchChanged( const QString& text )
@@ -211,7 +219,15 @@ void UIMain::on_seRomsFilter_searchChanged( const QString& text )
 	const MachineItem* machine = mMachineModel->itemFromIndex( machineIndex );
 	
 	mRomModel->refresh( machine, mSettings, text );
-	lTotalRoms->setText( tr( "Searching roms..." ) );
+	
+	if ( machine )
+	{
+		lTotalRoms->setText( tr( "Searching roms..." ) );
+	}
+	else
+	{
+		lTotalRoms->setText( tr( "Searching roms cancelled, no machine." ) );
+	}
 }
 
 void UIMain::on_tvRoms_activated( const QModelIndex& proxyIndex )
@@ -235,8 +251,10 @@ void UIMain::on_processQuery_started( ProcessQuery::Task task )
 
 void UIMain::on_processQuery_error( ProcessQuery::Task task, QProcess::ProcessError error )
 {
-	const QString message = tr( "*** Error %1 on task %2" ).arg( error ).arg( task );
+	const QString message = tr( "*** Error %1 on task %2\n%3" ).arg( error ).arg( task ).arg( mProcessQuery->errorString() );
 	appendLog( message );
+	
+	QMessageBox::critical( this, QString::null, message );
 }
 
 void UIMain::on_processQuery_finished( int exitCode, QProcess::ExitStatus exitStatus )
