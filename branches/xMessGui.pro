@@ -15,10 +15,9 @@
 ###########################################################################################
 
 XUPProjectSettings {
-	EDITOR	= QMake
-	QT_VERSION	= Qt System (4.5.0)
-	EXECUTE_DEBUG	= xMessGui_debug
-	EXECUTE_RELEASE	= xMessGui
+	QT_VERSION	= Qt System (4.5.2)
+	OTHERS_PLATFORM_TARGET_DEBUG	= xMessGui_debug
+	OTHERS_PLATFORM_TARGET_RELEASE	= xMessGui
 }
 
 TEMPLATE	= app
