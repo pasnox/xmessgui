@@ -14,72 +14,75 @@
 ##
 ###########################################################################################
 
-XUPProjectSettings {
-	QT_VERSION	= Qt System (4.5.2)
-	OTHERS_PLATFORM_TARGET_DEBUG	= xMessGui_debug
-	OTHERS_PLATFORM_TARGET_RELEASE	= xMessGui
-}
+XUP.QT_VERSION = Qt System (4.7.2)
+XUP.TRANSLATIONS_BASENAME = app
+XUP.TRANSLATIONS_DIRECTORY = translations
+XUP.OTHERS_PLATFORM_TARGET_DEBUG = xMessGui_debug
+XUP.OTHERS_PLATFORM_TARGET_RELEASE = xMessGui
 
-TEMPLATE	= app
-LANGUAGE	= C++/Qt4
-TARGET	= $$quote(xMessGui)
-CONFIG	+= debug_and_release
-BUILD_PATH	= ./build
+TEMPLATE = app
+LANGUAGE = C++/Qt4
+TARGET = $$quote(xMessGui)
+CONFIG *= debug_and_release
+QT = core gui xml
+BUILD_PATH = ./build
 
 CONFIG(debug, debug|release) {
-	#Debug
-	CONFIG	+= console
-	unix:TARGET	= $$join(TARGET,,,_debug)
-	else:TARGET	= $$join(TARGET,,,d)
-	unix:OBJECTS_DIR	= $${BUILD_PATH}/debug/.obj/unix
-	win32:OBJECTS_DIR	= $${BUILD_PATH}/debug/.obj/win32
-	mac:OBJECTS_DIR	= $${BUILD_PATH}/debug/.obj/mac
-	UI_DIR	= $${BUILD_PATH}/debug/.ui
-	MOC_DIR	= $${BUILD_PATH}/debug/.moc
-	RCC_DIR	= $${BUILD_PATH}/debug/.rcc
+    #Debug
+    CONFIG *= console
+    unix:TARGET = $$join(TARGET,,,_debug)
+    else:TARGET = $$join(TARGET,,,d)
+    unix:OBJECTS_DIR = $${BUILD_PATH}/debug/.obj/unix
+    win32:OBJECTS_DIR = $${BUILD_PATH}/debug/.obj/win32
+    mac:OBJECTS_DIR = $${BUILD_PATH}/debug/.obj/mac
+    UI_DIR = $${BUILD_PATH}/debug/.ui
+    MOC_DIR = $${BUILD_PATH}/debug/.moc
+    RCC_DIR = $${BUILD_PATH}/debug/.rcc
 } else {
-	#Release
-	unix:OBJECTS_DIR	= $${BUILD_PATH}/release/.obj/unix
-	win32:OBJECTS_DIR	= $${BUILD_PATH}/release/.obj/win32
-	mac:OBJECTS_DIR	= $${BUILD_PATH}/release/.obj/mac
-	UI_DIR	= $${BUILD_PATH}/release/.ui
-	MOC_DIR	= $${BUILD_PATH}/release/.moc
-	RCC_DIR	= $${BUILD_PATH}/release/.rcc
+    #Release
+    unix:OBJECTS_DIR = $${BUILD_PATH}/release/.obj/unix
+    win32:OBJECTS_DIR = $${BUILD_PATH}/release/.obj/win32
+    mac:OBJECTS_DIR = $${BUILD_PATH}/release/.obj/mac
+    UI_DIR = $${BUILD_PATH}/release/.ui
+    MOC_DIR = $${BUILD_PATH}/release/.moc
+    RCC_DIR = $${BUILD_PATH}/release/.rcc
 }
 
-SOURCES	= src/main.cpp \
-	src/UIMain.cpp \
-	src/ProcessQuery.cpp \
-	src/MachineModel.cpp \
-	src/MachineItem.cpp \
-	src/MachineFilterModel.cpp \
-	src/Settings.cpp \
-	src/UISettings.cpp \
-	src/RomModel.cpp \
-	src/SearchEdit.cpp \
-	src/Utils.cpp \
-	src/MachineInfos.cpp \
-	src/RomFilterModel.cpp \
-	src/UIAbout.cpp
+INCLUDEPATH = . \
+    src
 
-FORMS	= src/UIMain.ui \
-	src/UISettings.ui \
-	src/UIAbout.ui
-HEADERS	= src/UIMain.h \
-	src/ProcessQuery.h \
-	src/MachineModel.h \
-	src/MachineItem.h \
-	src/MachineFilterModel.h \
-	src/Settings.h \
-	src/UISettings.h \
-	src/RomModel.h \
-	src/SearchEdit.h \
-	src/Utils.h \
-	src/MachineInfos.h \
-	src/RomFilterModel.h \
-	src/main.h \
-	src/UIAbout.h
-QT	= core gui xml
-INCLUDEPATH	= . \
-	src
-RESOURCES	= src/resources/resources.qrc
+RESOURCES = src/resources/resources.qrc
+
+FORMS = src/UIMain.ui \
+    src/UISettings.ui \
+    src/UIAbout.ui
+
+HEADERS = src/UIMain.h \
+    src/ProcessQuery.h \
+    src/MachineModel.h \
+    src/MachineItem.h \
+    src/MachineFilterModel.h \
+    src/Settings.h \
+    src/UISettings.h \
+    src/RomModel.h \
+    src/SearchEdit.h \
+    src/Utils.h \
+    src/MachineInfos.h \
+    src/RomFilterModel.h \
+    src/main.h \
+    src/UIAbout.h
+
+SOURCES = src/main.cpp \
+    src/UIMain.cpp \
+    src/ProcessQuery.cpp \
+    src/MachineModel.cpp \
+    src/MachineItem.cpp \
+    src/MachineFilterModel.cpp \
+    src/Settings.cpp \
+    src/UISettings.cpp \
+    src/RomModel.cpp \
+    src/SearchEdit.cpp \
+    src/Utils.cpp \
+    src/MachineInfos.cpp \
+    src/RomFilterModel.cpp \
+    src/UIAbout.cpp
