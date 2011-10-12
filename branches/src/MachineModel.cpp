@@ -323,20 +323,23 @@ MachinesCount MachineModel::count( MachineItem* parent ) const
 	MachineItem* root = rootItem();
 	parent = parent ? parent : root;
 	
-	foreach ( MachineItem* item, parent->children() )
+	if ( parent )
 	{
-		mcount.total++;
-		
-		if ( item->infos().data( MachineInfos::CloneOf ).isEmpty() )
+		foreach ( MachineItem* item, parent->children() )
 		{
-			mcount.unique++;
+			mcount.total++;
+			
+			if ( item->infos().data( MachineInfos::CloneOf ).isEmpty() )
+			{
+				mcount.unique++;
+			}
+			else
+			{
+				mcount.clones++;
+			}
+			
+			mcount += count( item );
 		}
-		else
-		{
-			mcount.clones++;
-		}
-		
-		mcount += count( item );
 	}
 	
 	return mcount;
